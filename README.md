@@ -37,6 +37,21 @@ Persistent English by design: the product name, omp tool names (`read`, `bash`, 
 transcript role labels, and the built-in `default` omp profile name (it comes from profile data,
 not from UI text).
 
+## Download
+
+A prebuilt macOS (Apple Silicon) build is attached to the
+[latest release](https://github.com/serena-sheng/omp-desktop-zh/releases/latest):
+
+```bash
+curl -LO https://github.com/serena-sheng/omp-desktop-zh/releases/latest/download/OMP-Desktop-0.6.0-zh-mac-arm64.zip
+ditto -x -k OMP-Desktop-0.6.0-zh-mac-arm64.zip .
+mv "OMP Desktop.app" /Applications/
+xattr -dr com.apple.quarantine "/Applications/OMP Desktop.app"   # unsigned build
+```
+
+The zip is built from this repository (`localization/build-and-install.sh`), ad-hoc signed and
+not notarized — the build is official upstream code plus the translations listed below.
+
 ## Build (macOS, Apple Silicon verified)
 
 ```bash
