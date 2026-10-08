@@ -1,181 +1,88 @@
-# OMP Desktop
+# omp-desktop-zh
 
-A native desktop app for [oh-my-pi](https://github.com/can1357/oh-my-pi) (`omp`), the terminal coding agent.
-Every tab runs its own `omp` process in RPC mode; the app shows what the agent is doing as it happens: streamed replies, tool calls, diffs, subagents, plans and what it costs.
-Built on Tauri 2 (Rust + the system webview). It doesn't bundle Electron, doesn't load anything from a CDN, and needs no browser.
+An independent fork of [OMP Desktop](https://github.com/apoc/omp-desktop) by apoc (Miroslav Drbal)
+with a **Simplified Chinese interface**.
 
-![OMP Desktop: project sidebar, a conversation with an edit diff, a test run and an approval prompt, and the ambient rail](screenshots/hero.webp)
+The app itself is unchanged: it is the Tauri 2 desktop front end for the
+[oh-my-pi](https://github.com/can1357/oh-my-pi) `omp` coding agent, one `omp --mode rpc-ui`
+process per tab, reading and writing the usual `~/.omp` configuration and sessions. This fork
+adds Chinese UI text and nothing else.
 
-## Contents
+Both upstream projects are MIT licensed; see [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
 
-- [Features](#features)
-- [Install](#install)
-- [Usage](#usage)
-- [Development](#development)
-- [Architecture](#architecture)
-- [License](#license)
+## Why a fork instead of a language pack
 
-## Features
+Upstream has no i18n: UI strings live inline in the React sources, and release builds compile the
+frontend ahead of time and **embed it inside the Rust binary** (the shipped `Contents/Resources`
+holds only `icon.icns`). There is no language file to drop in and no way to patch a binary build,
+so the only route to a translated UI is rebuilding from a translated source tree.
 
-### Projects and tabs
+## What changed
 
-- **One tab = one agent.** Each tab is its own `omp` process, with its own working folder and profile. Switching tabs keeps in-flight turns streaming in the background.
-- **Project sidebar** (`Ctrl+B`): open tabs grouped by project, plus recently opened folders. Tabs on the same folder collapse into one tab-bar chip with a dropdown.
-- **Named conversations.** A new tab starts under its folder name and renames itself to the conversation's generated title once the first exchange ends. A `/rename` you type always wins.
-- **Conversation history** (`Ctrl+H`): search and resume saved sessions. If the conversation is already open in a tab, that tab is focused instead of opening it twice.
-- **Open with OMP Desktop.** Open a folder from Finder, Explorer or your Linux file manager, or run `omp-desktop /path/to/project`. If the app is already running, the folder opens as a new tab in the existing window.
-- **Welcome screen.** With no tab open, the app shows a welcome screen and doesn't run any agent until you open a project.
+- **`localization/zh.json`** — a 481-entry English → Simplified Chinese dictionary keyed by the
+  exact upstream source string.
+- **`localization/apply.py`** — applies the dictionary. It rewrites *display positions only*:
+  JSX text nodes, display props (`label:`/`title:`/`text:`/`hint:`/`message:`/`aria-label:` …),
+  `{"strings"}` children, three whitelisted JSX ternary words, and sentence-like bare literals
+  (skipping comments, comparisons and object keys). Code semantics are never touched —
+  DOM key sentinels such as `"Dead"` / `"Unidentified"` and the CSS-class ternaries such as
+  `cond ? "on" : ""` are explicitly protected.
+- **`localization/patch-config.py`** — the three non-text changes: `lang="zh-CN"`, a CJK font
+  fallback in the font stacks, and the updater `endpoints` emptied so this build is not silently
+  replaced by the official English release. (The `plugins` block itself must stay: the Rust side
+  still initializes the updater plugin, and removing its config makes the app panic at startup.)
+- Result: **386 dictionary keys / 527 replacements across 57 files**, plus the config edits.
 
-![Welcome screen with recent projects in the sidebar](screenshots/welcome.webp)
+Persistent English by design: the product name, omp tool names (`read`, `bash`, `todo` …),
+transcript role labels, and the built-in `default` omp profile name (it comes from profile data,
+not from UI text).
 
-### Watching the agent work
-
-- **Tool cards** for every call: `read`, `grep`, `bash`, `eval` (JS/Python kernel cells), `edit`, `task` and more. Output streams live, code is syntax-highlighted, and edit diffs have a scrubber.
-- **Approvals.** Sessions start in `--approval-mode write`, so exec-tier tools ask first. Answer *Approve*, *Allow for this session* or *Always allow in this project*, and review or revoke the saved rules in the approval-rules panel.
-- **Ambient rail.** Shows the context-window gauge, cost, a tokens/sec sparkline, an agent radar of recent tool activity, and a minimap of the session. Click a minimap cell to jump to that message.
-- **Subagent manager.** Agents started by a `task` call appear in the rail as they run. Open the manager to get totals, a swimlane timeline, agents grouped by the task call that spawned them, and an inspector for each agent's assignment, tools, output and transcript.
-
-![Subagent manager: four parallel scouts, their timeline and per-agent cost](screenshots/subagents.webp)
-
-### Plan mode
-
-Toggle plan mode (`Shift+Alt+P`, `/plan` or the composer pill) and the agent drafts a plan before touching any files. Click any block of the plan to comment on it; your comments go back with the next *send feedback*, and *approve* lets the agent start. The agent's todo list fills the kanban (`/todo`).
-
-![Plan mode with an inline comment on the approach](screenshots/plan-mode.webp)
-
-### Composer
-
-- `/` opens a palette with the desktop commands plus every omp slash command and skill discovered for the tab.
-- `@` autocompletes project file paths.
-- Attach images from a file picker or paste them from the clipboard. Click an attached image to view it full size.
-- Prompt history: `↑`/`↓` recalls earlier prompts, and `Ctrl+↑` opens a searchable picker.
-- Send while the agent is working to *steer* the current turn, or queue a follow-up with `Ctrl+Enter`.
-- Model picker and thinking level (`off · minimal · low · medium · high · xhigh`) are available from the composer, the status bar, or the keyboard.
-
-![Command bridge (Ctrl+K)](screenshots/command-bridge.webp)
-
-### Panels
-
-| | |
-|---|---|
-| **Changes**: `git status`/`git diff` for the tab's project, with per-file accept and reject | **Usage**: requests, cost, tokens and throughput for the last 24 h, by model, folder and agent type (from `omp stats`) |
-| ![Changes panel](screenshots/changes.webp) | ![Usage statistics](screenshots/usage.webp) |
-| **History**: saved conversations for the tab's profile, searchable and resumable | **Shortcuts** (`Ctrl+/`): every action with its chord; rebind, add a second chord, or reset |
-| ![Conversation history](screenshots/history.webp) | ![Keyboard shortcuts](screenshots/shortcuts.webp) |
-
-### Profiles, updates, look
-
-- **Profiles.** A tab can run under an omp profile (`omp --profile <id>`) with its own auth, sessions, settings and caches. Create, rename and switch profiles from the title bar, and tick one as the startup default. A new profile boots far enough to run `/login`.
-- **In-app updates.** The app checks the signed release feed 15 s after launch and every 6 h after that. Windows, macOS and the Linux AppImage install updates themselves and relaunch. `.deb`/`.rpm` and source builds show a notice with a link to the release instead.
-- **Tweaks panel** (status bar): theme (`aurora`, `phosphor`, `daylight`), density, accent colour, mono chat font, font size, layout (`rail`, `split`, `focus`) and prompt-history size.
-
-| phosphor | daylight |
-|---|---|
-| ![Phosphor theme](screenshots/theme-phosphor.webp) | ![Daylight theme](screenshots/theme-daylight.webp) |
-
-### Security
-
-- Agent output is rendered as Markdown, with any raw HTML escaped. Links open in your system browser, and `javascript:`/`data:` links are rendered as plain text.
-- Release builds use a strict Content Security Policy: no inline scripts, no `eval`, the asset protocol off and the shell plugin removed.
-- Tokens, API keys and auth headers are redacted from agent output and logs.
-- Closing a tab or quitting kills the agent's whole process tree, so no orphaned subagents or tool processes are left behind.
-
-## Install
-
-### Requirements
-
-`omp` must be installed and on your `PATH` (on Windows it is usually `%LOCALAPPDATA%\omp\omp.exe`). Each release needs a recent omp: a tab started against an older one does not start, and its message names the version required (`omp update` fixes it). On macOS, GUI apps get a minimal `PATH`, so the app also looks in Homebrew, `~/.local/bin` and `~/.cargo/bin`.
-
-### Download
-
-Grab the latest build from [Releases](https://github.com/apoc/omp-desktop/releases/latest):
-
-| Platform | Package |
-|---|---|
-| Windows x64 | `*_x64-setup.exe` (NSIS) or `*_x64_en-US.msi` |
-| macOS Apple Silicon / Intel | `*_aarch64.dmg` / `*_x64.dmg` |
-| Linux x64 | `*.AppImage`, `*.deb`, `*.rpm` |
-
-The installers are not code-signed yet (no Authenticode signature, no Apple notarisation), so SmartScreen and Gatekeeper will warn the first time you run the app. Updates are still verified against the app's own minisign key.
-
-## Usage
-
-Open a folder with the `+` button (or `Ctrl+T`), from the sidebar's recent projects, or with your OS's "Open with". Then talk to the agent. Conversations are stored by omp itself, per profile, so the history panel also lists sessions you started in a terminal.
-
-### Keyboard shortcuts
-
-On macOS, `Ctrl+K`, `Ctrl+H`, `Ctrl+/`, `Ctrl+B`, `Ctrl+T`, `Ctrl+W` and `Ctrl+↑` also work with `⌘`. All shortcuts can be rebound in `Ctrl+/`. Your overrides are stored in `<app config>/keybindings.json`, and omp's own `~/.omp/agent/keybindings.yml` is used as the base layer.
-
-| Action | Default |
-|---|---|
-| Command bridge | `Ctrl+K` |
-| Conversation history | `Ctrl+H` |
-| Keyboard shortcuts | `Ctrl+/` |
-| Toggle project sidebar | `Ctrl+B` |
-| New tab / close tab | `Ctrl+T` / `Ctrl+W` |
-| Next / previous tab | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
-| Prompt history picker | `Ctrl+↑` |
-| Interrupt the turn | `Esc` |
-| Cycle thinking level | `Shift+Tab` |
-| Cycle model / pick model | `Ctrl+P` (`Ctrl+Shift+P` back) / `Alt+M` |
-| Toggle plan mode | `Shift+Alt+P` |
-| Queue a follow-up | `Ctrl+Enter` or `Ctrl+Q` |
-
-The changes, approval-rules, usage, kanban, compact, export and update-check actions have no default chord. You can bind one in the shortcuts screen.
-
-### Slash commands
-
-The desktop adds `/plan`, `/steer`, `/compact`, `/new`, `/history`, `/branch`, `/model`, `/thinking`, `/login`, `/todo`, `/export`, `/shortcuts` and `/check-updates`. Everything else omp offers (`/rename`, `/mcp`, `/skill:<name>`, …) shows up in the same palette.
-
-## Development
-
-| Tool | Version |
-|---|---|
-| [Rust](https://rustup.rs/) | stable |
-| [Node.js](https://nodejs.org/) | 18+ |
-| Tauri 2 system dependencies | see [Tauri prerequisites](https://tauri.app/start/prerequisites/) (WebKitGTK 4.1 on Linux, WebView2 on Windows) |
+## Build (macOS, Apple Silicon verified)
 
 ```bash
-git clone https://github.com/apoc/omp-desktop
-cd omp-desktop
-npm install            # Tauri CLI only
-npm run dev            # serves src/ as is; JSX is compiled in the webview by Babel
-npm run build          # precompiles src/ into dist/ and bundles installers
+brew install node rust
+npm install
+npm run build -- --bundles app      # runs scripts/build-frontend.mjs, then cargo build
+cp -R "src-tauri/target/release/bundle/macos/OMP Desktop.app" /Applications/
+xattr -dr com.apple.quarantine "/Applications/OMP Desktop.app"
 ```
 
-There is no bundler. In dev, `src/index.html` loads every script in dependency order and `@babel/standalone` transpiles the JSX in the page. Release builds embed `dist/`, written by `scripts/build-frontend.mjs`: the JSX is compiled ahead of time with the same vendored Babel, and React's production build is used.
+`omp` must be on `PATH` (the app also searches Homebrew, `~/.local/bin` and `~/.cargo/bin`).
+Builds are ad-hoc signed, not notarized — macOS will want the quarantine flag cleared once.
 
-| Check | Command |
-|---|---|
-| All JS regression scripts (+ `dist/` build) | `npm test` |
-| Rust tests | `cd src-tauri && cargo test --locked` |
-| Rust lint (must stay clean) | `cd src-tauri && cargo +nightly clippy --all-targets --all-features -- -W clippy::pedantic -W clippy::nursery -D warnings` |
-| Probe omp's RPC surface directly | `node tests/test-rpc.mjs` |
+## Keeping up with upstream
 
-CI and every release run the same suite: `cargo test` on Windows, Linux and macOS, plus `npm test`.
-Contributor rules (script load order, the IIFE rule, CSP constraints, clone discipline in Rust, the changelog workflow) are in [`AGENTS.md`](AGENTS.md). User-facing changes are recorded in [`CHANGELOG.md`](CHANGELOG.md).
+Upstream releases every day or two, so the dictionary needs a refresh now and then:
 
-## Architecture
-
-```mermaid
-flowchart LR
-  subgraph Webview["Webview (src/)"]
-    UI["React UI<br/>app-live.jsx · design/"] <--> Bridge["live.js<br/>OMP_BRIDGE · per-tab state"]
-  end
-  subgraph Rust["Rust (src-tauri/)"]
-    AB["AgentBridge<br/>one child per tab"]
-    Svc["profiles · recent projects · approval rules<br/>keybindings · git workspace · stats · updater"]
-  end
-  Bridge -- "invoke send_command" --> AB
-  AB -- "agent://line/{id} events" --> Bridge
-  Bridge -- invoke --> Svc
-  AB -- "stdin / stdout (JSON lines)" --> OMP["omp --mode rpc-ui"]
+```bash
+git remote add upstream https://github.com/apoc/omp-desktop.git  # once
+git fetch upstream && git rebase upstream/HEAD                   # or merge, resolving src/ conflicts by re-applying
+python3 localization/apply.py . --dry-run --stats                # keys with 0 hits = strings upstream changed or added
+# update localization/zh.json for those, then:
+bash localization/build-and-install.sh
 ```
 
-- **Rust** (`src-tauri/src/`): `agent/` spawns and supervises one `omp` per tab. That covers process groups and job objects, so a tab's whole tree dies with it; bounded stdout/stderr readers; and a per-session journal that replays what a background tab missed. Around it are small modules for profiles, recent projects, approval rules, keybindings, the git working tree, `omp stats`, saved sessions, OS folder-open requests and the updater.
-- **Bridge** (`src/live.js`): all the RPC traffic. It keeps a registry of tabs, snapshots each tab's live state when you switch away, and exposes `window.OMP_BRIDGE` to React. `src/adapter.js` holds the pure transforms from RPC shapes to UI shapes.
-- **UI** (`src/app-live.jsx`, `src/app/`, `src/design/`): React 19 without a bundler. Pure logic (keymap, project navigation, subagent reducer, updater state, session-title gates, …) lives in plain `src/app/*.js` modules, which the regression scripts in `tests/` load directly.
+`--dry-run` lists every dictionary key that no longer matches the source, which is exactly the
+work list. See [localization/HOWTO.md](localization/HOWTO.md) for the details and the rollback
+steps.
+
+## Status
+
+Verified locally on macOS 27 / Apple Silicon: 52 JSX files compile, `tauri build` succeeds
+(`OMP Desktop.app`, ~10.3 MiB), the app launches without crashing, and the rendered UI reads
+Chinese in the sidebar, status bar and ambient rail (`项目 / 打开 / 最近 / 已连接 / 成本 /
+自动保存 开 / 环境 / 吞吐 / 智能体雷达 / 子智能体 / 空闲 / 小地图 / 命令面板`).
+Conversation views, settings and dialogs were not checked screen by screen, and the app's
+connection to a real `omp` session was not exercised. Not affiliated with or endorsed by the
+upstream author.
+
+## 中文说明
+
+这是 [OMP Desktop](https://github.com/apoc/omp-desktop) 的独立分支，界面为简体中文。
+上游没有 i18n，且发布包把前端嵌进了 Rust 二进制，所以汉化只能从源码重建：
+`localization/zh.json` 是 481 条英→中字典，`localization/apply.py` 只改「展示位置」的字符串，
+绝不碰代码语义字符串。构建方式见上文，上游更新后用 `apply.py --dry-run` 列出失配条目补齐即可。
 
 ## License
 
-[MIT](LICENSE)
+MIT, same as upstream. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
