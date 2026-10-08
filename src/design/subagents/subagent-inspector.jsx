@@ -56,8 +56,8 @@ function SaActivity({ agent: a, now }) {
       </div>
 
       <div>
-        <div className="sa-block-k">recent tools</div>
-        {recent.length === 0 ? <div className="sa-empty">No tool calls yet.</div> : (
+        <div className="sa-block-k">最近工具</div>
+        {recent.length === 0 ? <div className="sa-empty">还没有工具调用。</div> : (
           <div className="sa-timeline">
             {recent.map(r => (
               <div key={`${r.endMs}:${r.tool}:${r.args}`} className="sa-tl-row">
@@ -83,17 +83,17 @@ function SaOutput({ agent: a, level }) {
   return (
     <>
       <div>
-        <div className="sa-block-k">recent output</div>
-        {lines.length === 0 ? <div className="sa-empty">No output yet.</div> : (
+        <div className="sa-block-k">最近输出</div>
+        {lines.length === 0 ? <div className="sa-empty">暂无输出。</div> : (
           <div className="sa-out selectable">
             {lines.map((l, i) => <div key={i} className="ta-stream-line">{l || "\u00a0"}</div>)}
           </div>
         )}
       </div>
       <div>
-        <div className="sa-block-k">event stream <span className={`chip muted mono sa-level ${level}`}>{level}</span></div>
+        <div className="sa-block-k">事件流 <span className={`chip muted mono sa-level ${level}`}>{level}</span></div>
         {a.stream.length === 0 ? (
-          <div className="sa-empty">{level === "events" ? "Waiting for events…" : "Events stream while an agent is inspected."}</div>
+          <div className="sa-empty">{level === "events" ? "等待事件…" : "查看某个智能体时，事件仍在流式更新。"}</div>
         ) : (
           <div className="sa-out selectable">
             {a.stream.map((l, i) => <div key={i} className={`ta-stream-line ${l.kind}`}>{saStreamText(l)}</div>)}
@@ -114,14 +114,14 @@ const SaTranscript = React.memo(function SaTranscript({ transcript, onRefresh })
   const messages = transcript?.messages ?? [];
   const loading = !transcript || transcript.status === "loading";
   if (loading && messages.length === 0) {
-    return <div className="sa-empty"><span className="shimmer-text">loading transcript…</span></div>;
+    return <div className="sa-empty"><span className="shimmer-text">正在加载记录…</span></div>;
   }
   return (
     <div>
       <div className="sa-block-k">
         {messages.length} messages
         <button className="btn ghost" style={{ marginLeft: "auto", height: 18, padding: "0 6px" }} onClick={onRefresh} disabled={loading}>
-          <_SAI_Icon name="refresh" size={10} /> {loading ? "loading…" : "refresh"}
+          <_SAI_Icon name="refresh" size={10} /> {loading ? "加载中…" : "refresh"}
         </button>
       </div>
       {transcript.status === "error" && <div className="sa-empty" style={{ color: "var(--rose)" }}>{transcript.error}</div>}
@@ -171,7 +171,7 @@ function SubagentInspector({ agent, callId, now, level, transcript, onBack, onLo
   return (
     <div className="sa-insp" style={_SAI_hue(agent)}>
       <div className="sa-insp-head">
-        <button className="btn icon ghost" onClick={onBack} title="back to all agents"><_SAI_Icon name="back" size={11} /></button>
+        <button className="btn icon ghost" onClick={onBack} title="返回全部智能体"><_SAI_Icon name="back" size={11} /></button>
         <_SAI_Glyph agent={agent} />
         <div className="sa-insp-title">
           <span className="sa-name">{agent.id}</span>
@@ -196,7 +196,7 @@ function SubagentInspector({ agent, callId, now, level, transcript, onBack, onLo
       <div className="sa-insp-foot">
         {callId && (
           <button className="btn ghost outlined" onClick={() => onJumpToCall(callId)}>
-            <_SAI_Icon name="arrowUp" size={10} /> task call
+            <_SAI_Icon name="arrowUp" size={10} /> task 调用
           </button>
         )}
         <button className="btn ghost outlined" onClick={() => copy("uri", `agent://${agent.id}`)} title={`agent://${agent.id}`}>
@@ -205,7 +205,7 @@ function SubagentInspector({ agent, callId, now, level, transcript, onBack, onLo
         </button>
         {agent.sessionFile && (
           <button className="btn ghost outlined" onClick={() => copy("file", agent.sessionFile)} title={agent.sessionFile}>
-            <_SAI_Icon name={copied === "file" ? "check" : "file"} size={10} /> {copied === "file" ? "copied" : "session file"}
+            <_SAI_Icon name={copied === "file" ? "check" : "file"} size={10} /> {copied === "file" ? "copied" : "会话文件"}
           </button>
         )}
       </div>

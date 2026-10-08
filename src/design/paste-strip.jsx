@@ -23,7 +23,7 @@ function PasteStrip({ pastes, onExpand }) {
             <div className={`paste-chip${isOpen ? " open" : ""}`} key={p.id}>
               <button
                 className="paste-chip-label"
-                title={isOpen ? "hide pasted text" : "show pasted text"}
+                title={isOpen ? "隐藏粘贴的文本" : "显示粘贴的文本"}
                 aria-expanded={isOpen}
                 aria-controls={isOpen ? "paste-preview" : undefined}
                 onClick={() => setOpenId(isOpen ? null : p.id)}
@@ -33,7 +33,7 @@ function PasteStrip({ pastes, onExpand }) {
                 <span className="paste-chip-meta">{p.lines} line{p.lines === 1 ? "" : "s"}</span>
                 <_PS_Icon name={isOpen ? "chev" : "chevR"} size={10} color="var(--fg-4)" />
               </button>
-              <button className="paste-chip-expand" title="put the pasted text into the prompt to edit it" onClick={() => onExpand(p.id)}>
+              <button className="paste-chip-expand" title="把粘贴的文本放回输入框以便编辑" onClick={() => onExpand(p.id)}>
                 expand
               </button>
             </div>

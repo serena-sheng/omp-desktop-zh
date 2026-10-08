@@ -39,7 +39,7 @@ const RetryRow = React.memo(function RetryRow({ msg, idx, highlighted, onStop })
   const stopNow = async () => {
     setStop({ busy: true, error: null });
     const res = await onStop?.();
-    if (res && !res.ok) setStop({ busy: false, error: res.error ?? "could not stop" });
+    if (res && !res.ok) setStop({ busy: false, error: res.error ?? "无法停止" });
   };
 
   return (
@@ -66,8 +66,8 @@ const RetryRow = React.memo(function RetryRow({ msg, idx, highlighted, onStop })
           <div className="retry-foot">
             <span className="retry-status mono">{status} · {failed}</span>
             <button type="button" className="btn outlined retry-stop" disabled={stop.busy} onClick={stopNow}
-              title={waiting ? "Stop retrying: the run ends on the last failure" : "Stop the attempt in flight, as Esc does"}>
-              {waiting ? "Stop retrying" : "Stop"}
+              title={waiting ? "停止重试：本次运行以最后一次失败结束" : "中止进行中的尝试，等同 Esc"}>
+              {waiting ? "停止重试" :"停止"}
             </button>
           </div>
           {stop.error && <div className="retry-stop-error">{stop.error}</div>}

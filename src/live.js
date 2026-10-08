@@ -32,12 +32,12 @@
     activity: [],
     ctx: { used: 0, total: 200000, pct: 0, label: "0 / 200k", cost: "$0.00", tokensPerSec: 0 },
     microcopy: {
-      empty:        "Hand me a project. I'll set the table.",
+      empty:        "把项目交给我，我来摆好桌子。",
       streamingTip: "Press ⎋ to interrupt — your cursor is in the room.",
-      paletteTip:   "type / to give orders · ⌘K opens the bridge",
-      planTip:      "describe what to build, or give feedback on the plan…",
-      todoEmpty:    "no plan yet. think out loud below.",
-      radarHint:    "agent has been busy — last 60 seconds",
+      paletteTip:   "输入 / 下达指令 · ⌘K 打开命令面板",
+      planTip:      "描述要构建什么，或对计划给出反馈…",
+      todoEmpty:    "还没有计划。在下面边说边想。",
+      radarHint:    "智能体最近 60 秒很忙",
     },
   };
 
@@ -213,7 +213,7 @@
   function _sendWithResponse(cmd, timeout = 120000) {
     return new Promise((resolve, reject) => {
       if (!window.__TAURI__ || !activeSessionId) {
-        reject(new Error("Not connected"));
+        reject(new Error("未连接"));
         return;
       }
       const id = `d${_nextCmdId++}`;
@@ -355,7 +355,7 @@
   // of swallowing it: resolves to `{ok: true, value}` or `{ok: false, error}`
   // (an error string meant for display).
   async function _invokeResult(cmd, args) {
-    if (!window.__TAURI__) return { ok: false, error: "not connected" };
+    if (!window.__TAURI__) return { ok: false, error: "未连接" };
     try {
       return { ok: true, value: await window.__TAURI__.core.invoke(cmd, args) };
     } catch (err) {
@@ -572,7 +572,7 @@
       "omp's RPC mode refuses to start without a usable model, so this tab has no agent —"
         + " which is also why `/login` and the provider list do nothing here.",
       "",
-      "Log in once from a terminal, then reopen the tab:",
+      "先在终端里登录一次，然后重新打开该标签页：",
       "",
       "```",
       `omp${flag}`,
@@ -1099,7 +1099,7 @@
    *  Shared by in-process `new_session` and profile respawn. */
   function _freshConversationFields(entry) {
     return {
-      name: _tabNameFor(entry.path, "new session"),
+      name: _tabNameFor(entry.path, "新建会话"),
       sessionFile: null,
       autoRenameArmed: true,
       autoRenameInFlight: false,
@@ -1155,7 +1155,7 @@
     if (!activeSessionId || !sessionRegistry.has(activeSessionId)) return;
     const entry = sessionRegistry.get(activeSessionId);
     if (!entry.autoRenameInFlight) return;
-    const untitledLabel = _tabNameFor(entry.path, "new session");
+    const untitledLabel = _tabNameFor(entry.path, "新建会话");
     const rearm = STITLE.shouldRearmAfterAbort(state.rpcState, entry.name, untitledLabel);
     sessionRegistry.set(activeSessionId, {
       ...entry,
@@ -1185,7 +1185,7 @@
   }) {
     _lastSessionMs = Math.max(Date.now(), _lastSessionMs + 1);
     const id = `session-${_lastSessionMs}`;
-    const tabName = name || _tabNameFor(cwd, resume ? "resumed" : "new session");
+    const tabName = name || _tabNameFor(cwd, resume ? "resumed" : "新建会话");
     const color = resume ? "var(--cyan)" : "var(--lilac)";
     // Register in tab list before starting omp so the tab shows immediately.
     // Register with null branch — chip hidden until git resolves.
@@ -1811,7 +1811,7 @@
       // {value: <text>} or {cancelled: true}.
       if (ev.method === "input") {
         state.messages = [...state.messages, _askMessage("input", ev, {
-          placeholder: ev.placeholder ?? "Enter value…",
+          placeholder: ev.placeholder ?? "输入值…",
         })];
         notify();
         return;
@@ -2224,7 +2224,7 @@
     const msg     = state.messages[realIdx];
     if (msg.blocks?.some(b => b.type === "plan")) return;
     const planBlock = {
-      type: "plan", title: "Plan",
+      type: "plan", title: "计划",
       phases: phases.map(ph => ({
         id: ph.name, label: ph.name,
         tasks: ph.tasks.map((t, i) => ({
@@ -2830,9 +2830,9 @@
     async goalStart(objective, tokenBudget, images) {
       const text = String(objective ?? "").trim();
       const imgs = images ?? [];
-      if (!text) return { ok: false, error: "Describe the goal first." };
+      if (!text) return { ok: false, error: "请先描述目标。" };
       const origin = activeSessionId;
-      if (!origin) return { ok: false, error: "Not connected" };
+      if (!origin) return { ok: false, error: "未连接" };
       const wasStreaming = state.isStreaming;
       try {
         const data = await _sendWithResponse(
@@ -2842,7 +2842,7 @@
       } catch (e) {
         // No answer is not a refusal: omp may still create the goal, whose
         // frame then shows it in the strip.
-        if (e?.timedOut) return { ok: false, error: "omp has not answered yet; if the goal starts, it shows here." };
+        if (e?.timedOut) return { ok: false, error: "omp 还没有回答；目标一旦开始就会显示在这里。" };
         return { ok: false, error: String(e?.message ?? e) };
       }
       if (origin !== activeSessionId) return { ok: true };
@@ -3438,7 +3438,7 @@
       // Any registered tab, not just the active one: an open in flight has
       // registered its tab but not activated it yet, and has already chosen
       // its profile — acknowledging the pick would silently drop it.
-      if (sessionRegistry.size > 0) return { ok: false, error: "a tab is open" };
+      if (sessionRegistry.size > 0) return { ok: false, error: "有一个标签页打开着" };
       if (!profiles.some(p => p.id === id)) return { ok: false, error: `unknown profile '${id}'` };
       _noTabProfileId = id;
       _syncRecentsProfile();
@@ -3460,7 +3460,7 @@
      *  remains is ordering, and the comments inside state why each await
      *  sits where it does. */
     async switchSessionProfile(id, profileId) {
-      if (!window.__TAURI__) return { ok: false, error: "not connected" };
+      if (!window.__TAURI__) return { ok: false, error: "未连接" };
       const entry = sessionRegistry.get(id);
       if (!entry) return { ok: false, error: "unknown tab" };
       if (entry.profile === profileId) return { ok: true }; // already on this profile
@@ -3658,7 +3658,7 @@
      *  The listener lives exactly as long as the install — it is attached
      *  before the invoke, so no early chunk is missed. */
     async installUpdate(onProgress) {
-      if (!window.__TAURI__) return { ok: false, error: "not connected" };
+      if (!window.__TAURI__) return { ok: false, error: "未连接" };
       const unlisten = await window.__TAURI__.event
         .listen("update://progress", ev => onProgress(ev.payload))
         .catch(err => { console.error("[live] update progress listener failed:", err); return null; });

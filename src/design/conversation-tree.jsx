@@ -10,9 +10,9 @@ const {
   TreeCompaction: _CT_Compaction, TreeDetail: _CT_Detail,
 } = window;
 
-const TREE_NO_FILE = "No conversation yet. The tree appears once the tab has a session file.";
+const TREE_NO_FILE = "还没有对话。该标签页产生会话文件后才会显示树。";
 
-const treeTtlLabel = ttlMs => (ttlMs == null ? "cache lifetime unknown" : `cache · ${_CT_Fmt.dur(ttlMs)}`);
+const treeTtlLabel = ttlMs => (ttlMs == null ? "缓存有效期未知" : `cache · ${_CT_Fmt.dur(ttlMs)}`);
 
 function TreeSummary({ model }) {
   const c = model.counts;
@@ -20,18 +20,18 @@ function TreeSummary({ model }) {
   return (
     <div className="tree-summary">
       {unknown ? (
-        <div>The provider reports no cache lifetime, so cache status and prices are unknown.</div>
+        <div>提供商没有报告缓存有效期，所以缓存状态与价格未知。</div>
       ) : (<>
         <div>
           <b className="lime">{c.warm + c.expiring}</b> of {c.total} prompts can be re-asked at cache-read price
-          {c.partial > 0 && <>, <b className="cyan">{c.partial}</b> partly cached</>}.
+          {c.partial > 0 && <>, <b className="cyan">{c.partial}</b> 部分缓存</>}.
         </div>
         <div className="tree-legend mono">
           <span><i className="lg warm" />cached</span>
           <span><i className="lg expiring" />&lt; 10 min</span>
-          <span><i className="lg partial" />partly cached</span>
+          <span><i className="lg partial" />部分缓存</span>
           <span><i className="lg cold" />cold</span>
-          <span className="muted">price = re-ask now</span>
+          <span className="muted">价 = 现在重问</span>
         </div>
       </>)}
     </div>
@@ -68,13 +68,13 @@ function ConversationTree({
 
   let empty = null;
   if (error) empty = error;
-  else if (!model) empty = treeKey && loading ? "Loading…" : TREE_NO_FILE;
-  else if (prompts.length === 0) empty = "No prompts in this conversation yet.";
+  else if (!model) empty = treeKey && loading ? "加载中…" : TREE_NO_FILE;
+  else if (prompts.length === 0) empty = "此对话还没有提示词。";
 
   return (
     <aside className="tree-drawer">
       <div className="tree-head">
-        <span className="tree-title">conversation tree</span>
+        <span className="tree-title">对话树</span>
         {model && (
           <span className="chip muted mono">
             {model.counts.total} prompts
@@ -84,10 +84,10 @@ function ConversationTree({
         )}
         {model && <span className="chip muted mono">{treeTtlLabel(model.ttlMs)}</span>}
         <div style={{ flex: 1 }} />
-        <button className="btn icon ghost" onClick={onRefresh} disabled={loading || !treeKey} title="refresh">
+        <button className="btn icon ghost" onClick={onRefresh} disabled={loading || !treeKey} title="刷新">
           <_CT_Icon name="refresh" size={10} />
         </button>
-        <button className="btn icon ghost" onClick={onClose} title="close">
+        <button className="btn icon ghost" onClick={onClose} title="关闭">
           <_CT_Icon name="close" size={10} />
         </button>
       </div>

@@ -109,19 +109,19 @@ function ChangesPanel({ onClose }) {
           <_ChangesIcon name="diff2" size={13} color="var(--accent)" />
           <span className="mono" style={{ color: "var(--fg-2)" }}>changes</span>
           {status.truncated && (
-            <span className="chip muted" style={{ marginLeft: 8 }}>truncated at 200 files</span>
+            <span className="chip muted" style={{ marginLeft: 8 }}>已截断至 200 个文件</span>
           )}
-          <button className="btn icon ghost" style={{ marginLeft: "auto" }} onClick={refreshStatus} title="refresh">
+          <button className="btn icon ghost" style={{ marginLeft: "auto" }} onClick={refreshStatus} title="刷新">
             <_ChangesIcon name="refresh" size={11} />
           </button>
-          <button className="btn icon ghost" onClick={onClose} title="close">
+          <button className="btn icon ghost" onClick={onClose} title="关闭">
             <_ChangesIcon name="close" size={11} />
           </button>
         </div>
         <div className="changes-body">
           <div className="changes-file-list">
-            {loading && status.files.length === 0 && <div className="panel-empty mono">loading…</div>}
-            {!loading && status.files.length === 0 && <div className="panel-empty mono">no changes</div>}
+            {loading && status.files.length === 0 && <div className="panel-empty mono">加载中…</div>}
+            {!loading && status.files.length === 0 && <div className="panel-empty mono">没有改动</div>}
             {status.files.map(f => {
               const meta = STATUS_KIND_META[f.kind] ?? STATUS_KIND_META.Modified;
               return (
@@ -132,10 +132,10 @@ function ChangesPanel({ onClose }) {
                 >
                   <span className="changes-kind" style={{ color: meta.color }}>{meta.label}</span>
                   <span className="changes-path mono" title={f.path}>{f.path}</span>
-                  <button className="btn icon ghost" title="stage" onClick={e => handleAccept(f.path, e)}>
+                  <button className="btn icon ghost" title="暂存" onClick={e => handleAccept(f.path, e)}>
                     <_ChangesIcon name="check" size={10} />
                   </button>
-                  <button className="btn icon ghost" title="discard" onClick={e => handleReject(f.path, f.kind, e)}>
+                  <button className="btn icon ghost" title="丢弃" onClick={e => handleReject(f.path, f.kind, e)}>
                     <_ChangesIcon name="trash" size={10} />
                   </button>
                 </div>
@@ -143,19 +143,19 @@ function ChangesPanel({ onClose }) {
             })}
           </div>
           <div className="changes-diff">
-            {diffLoading && <div className="panel-empty mono">loading diff…</div>}
-            {!diffLoading && !diff && <div className="panel-empty mono">select a file</div>}
+            {diffLoading && <div className="panel-empty mono">正在加载差异…</div>}
+            {!diffLoading && !diff && <div className="panel-empty mono">选择文件</div>}
             {!diffLoading && diff?.kind === "Binary" && (
-              <div className="panel-empty mono">binary file — no text diff to show</div>
+              <div className="panel-empty mono">二进制文件 —— 没有可显示的文本差异</div>
             )}
             {!diffLoading && diff?.kind === "Untracked" && (
-              <div className="panel-empty mono">untracked file — nothing to diff against</div>
+              <div className="panel-empty mono">未跟踪文件 —— 没有可对比的基准</div>
             )}
             {!diffLoading && diff?.kind === "Text" && (
               <_ChangesMarkdown text={fencedDiff} />
             )}
             {!diffLoading && diff?.truncated && (
-              <div className="chip muted" style={{ marginTop: 6 }}>diff truncated</div>
+              <div className="chip muted" style={{ marginTop: 6 }}>差异已截断</div>
             )}
           </div>
         </div>

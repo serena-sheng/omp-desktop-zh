@@ -127,7 +127,7 @@ function TreeMeter({ row, ttlMs, now }) {
     label = row.until != null ? `cold · since ${TreeFmt.when(row.until, now)}` : "cold";
     priceClass = "write";
   } else {
-    label = "cache unknown";
+    label = "缓存未知";
     priceClass = "";
   }
   return (
@@ -144,7 +144,7 @@ function treeTags(row, model, now, since, currentFile, onOpenTip) {
   const tags = [];
   if (row.isAnchor) {
     tags.push(<span key="anchor" className="tree-tip anchor"
-      title="omp re-marks every 15th prompt on each request, so the cache up to here stays alive while you work">
+      title="omp 每次请求都会重新标记每第 15 条提示词，所以你工作期间这之前的缓存能保持存活">
       ⚓ cache anchor · prompt {row.ordinal}
     </span>);
   }
@@ -154,30 +154,30 @@ function treeTags(row, model, now, since, currentFile, onOpenTip) {
     </span>);
   }
   if (row.staleProcess || row.tipIndexes.some(i => model.tips[i]?.staleProcess)) {
-    tags.push(<span key="stale" className="tree-tip stale" title={TreeFmt.staleNote(since, now)}>earlier process</span>);
+    tags.push(<span key="stale" className="tree-tip stale" title={TreeFmt.staleNote(since, now)}>更早的进程</span>);
   }
   if (row.label) tags.push(<span key="label" className="tree-tip label" title={row.label}>{row.label}</span>);
   for (const i of row.tipIndexes) {
     const tip = model.tips[i];
     if (!tip) continue;
     if (tip.isCurrent) {
-      tags.push(<span key={`tip${i}`} className="tree-tip here">this tab</span>);
+      tags.push(<span key={`tip${i}`} className="tree-tip here">该标签页</span>);
       if (_CTR_isLive(tip.state)) {
         tags.push(<span key={`cont${i}`} className={`tree-cont ${tip.state}`}>
           ▸ continue · cached {TreeFmt.dur((tip.until ?? now) - now)}
         </span>);
       } else if (tip.state === "cold") {
-        tags.push(<span key={`cont${i}`} className="tree-cont cold">▸ continue · cold</span>);
+        tags.push(<span key={`cont${i}`} className="tree-cont cold">▸ 继续 · 冷缓存</span>);
       } else if (tip.state === "partial") {
-        tags.push(<span key={`cont${i}`} className="tree-cont expiring">▸ continue · partly cached</span>);
+        tags.push(<span key={`cont${i}`} className="tree-cont expiring">▸ 继续 · 部分缓存</span>);
       }
     } else if (tip.file && tip.file !== currentFile) {
       tags.push(<button key={`tip${i}`} className="tree-tip open" onClick={e => { e.stopPropagation(); onOpenTip(tip.file); }}
-        title="open this branch in a new tab">
+        title="在新标签页打开该分支">
         ⎘ open · {tip.title || "branch"}
       </button>);
     } else {
-      tags.push(<span key={`tip${i}`} className="tree-tip">branch tip</span>);
+      tags.push(<span key={`tip${i}`} className="tree-tip">分支尖端</span>);
     }
   }
   return tags;
@@ -195,7 +195,7 @@ const TreeRow = React.memo(function TreeRow({ row, model, now, since, selected, 
         <div className="tree-prompt" title={row.text}>
           <span className="tree-time mono">{TreeFmt.when(row.ts, now)}</span>{row.text || <i>(no text)</i>}
         </div>
-        <div className="tree-reply">{row.reply ? row.reply : <i>no text reply</i>}</div>
+        <div className="tree-reply">{row.reply ? row.reply : <i>没有文本回复</i>}</div>
         {tags.length > 0 && <div className="tree-tips">{tags}</div>}
       </div>
       <TreeMeter row={row} ttlMs={model.ttlMs} now={now} />
@@ -207,7 +207,7 @@ const TreeCompaction = React.memo(function TreeCompaction({ row, now }) {
   return (
     <div className="tree-compaction">
       <span>context compacted · {TreeFmt.when(row.ts, now)}</span>
-      <span>prompts above re-ask the full earlier context</span>
+      <span>上面的提示词会重新请求此前全部上下文</span>
     </div>
   );
 });

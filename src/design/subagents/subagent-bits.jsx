@@ -59,7 +59,7 @@ function SaStatusChip({ agent }) {
   const label = agent.unknownOutcome ? "ended" : SA_STATUS_LABEL[agent.status] ?? agent.status;
   const tone = agent.unknownOutcome ? "muted" : SA_STATUS_CHIP[agent.status] ?? "muted";
   return (
-    <span className={`chip ${tone}`} title={agent.unknownOutcome ? "finished while this tab was in the background" : undefined}>
+    <span className={`chip ${tone}`} title={agent.unknownOutcome ? "该标签页在后台时这项工作已结束" : undefined}>
       <SaDot status={agent.status} /> {label}
     </span>
   );

@@ -24,11 +24,11 @@ function EvalCell({ cell }) {
         {cell.title && <span className="eval-title">{cell.title}</span>}
         {cell.durationMs != null
           ? <span className="eval-dur" style={{ marginLeft: "auto" }}>{cell.durationMs}ms</span>
-          : cell.status === "running" && <span className="shimmer-text" style={{ marginLeft: "auto", fontSize: 10 }}>running…</span>
+          : cell.status === "running" && <span className="shimmer-text" style={{ marginLeft: "auto", fontSize: 10 }}>运行中…</span>
         }
       </div>
       {cell.code && (
-        <_EvalCopyHost label="Copy code" text={done ? cell.code.trimEnd() : ""}>
+        <_EvalCopyHost label="复制代码" text={done ? cell.code.trimEnd() : ""}>
           {codeHtml
             ? <pre className="eval-code selectable"><code className={`hljs language-${lang}`}
                 dangerouslySetInnerHTML={{ __html: codeHtml }} /></pre>
@@ -36,7 +36,7 @@ function EvalCell({ cell }) {
         </_EvalCopyHost>
       )}
       {cell.output && (
-        <_EvalCopyHost label="Copy output" text={done ? cell.output.trimEnd() : ""}>
+        <_EvalCopyHost label="复制输出" text={done ? cell.output.trimEnd() : ""}>
           <pre className={`eval-output selectable mono${cell.status === "error" ? " eval-error" : ""}`}>
             {cell.output.trimEnd()}
           </pre>

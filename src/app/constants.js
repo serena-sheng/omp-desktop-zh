@@ -36,7 +36,7 @@
   const INTENT_FRAMING = (intent) =>
     `Please draft a plan for the following task. Write it in Markdown with clear sections: overview, approach, key steps, and risks. Do not start implementing yet — draft only for my review.\n\n---\n\n${intent.trim()}`;
 
-  const APPROVAL_PROMPT = "Plan approved. Please proceed to execute it. Use your todo_write tool to track tasks as you go.";
+  const APPROVAL_PROMPT = "计划已批准。请开始执行；过程中用 todo_write 工具跟踪任务。";
 
   // `true` when a keydown is an Enter that should submit — i.e. not the
   // Enter that confirms an in-progress IME composition (typing Chinese/
@@ -58,13 +58,13 @@
   // (packages/tui/src/thinking.ts, THINKING_LEVEL_METADATA), plus the status
   // bar's abbreviation where it shortens one.
   const THINKING_LEVELS = {
-    off:     { hint: "no reasoning" },
+    off:     { hint: "无推理" },
     minimal: { hint: "very brief reasoning (~1k tokens)", short: "min" },
     low:     { hint: "light reasoning (~2k tokens)" },
     medium:  { hint: "moderate reasoning (~8k tokens)", short: "med" },
     high:    { hint: "deep reasoning (~16k tokens)" },
     xhigh:   { hint: "extended reasoning (~32k tokens)" },
-    max:     { hint: "maximum reasoning the model supports" },
+    max:     { hint: "模型支持的最大推理量" },
   };
 
   Object.assign(window, {

@@ -35,7 +35,7 @@ function ProjectSidebar({
       onClose={() => setRenaming(null)} />
   );
   const renameButton = t => (
-    <button className="psb-act" title="rename conversation" onClick={() => startRename(t.id)}>
+    <button className="psb-act" title="重命名对话" onClick={() => startRename(t.id)}>
       <Icon name="edit" size={10} />
     </button>
   );
@@ -43,17 +43,17 @@ function ProjectSidebar({
   const hideHint = sidebarHint("desktop.sidebar.toggle", "Ctrl+B");
 
   return (
-    <aside className="project-sidebar" aria-label="projects">
+    <aside className="project-sidebar" aria-label="项目">
       <div className="psb-head">
-        <span>projects</span>
+        <span>项目</span>
         <button className="psb-act" title={`hide sidebar (${hideHint})`} onClick={onHide}>
           <Icon name="sidebar" size={11} />
         </button>
       </div>
 
       <div className="psb-scroll">
-        <div className="psb-section">open</div>
-        {groups.length === 0 && <div className="psb-empty">no open tabs</div>}
+        <div className="psb-section">打开</div>
+        {groups.length === 0 && <div className="psb-empty">没有打开的标签页</div>}
         {groups.map(group => {
           const multi = group.tabs.length > 1;
           const expanded = multi && !collapsed[group.key];
@@ -100,14 +100,14 @@ function ProjectSidebar({
                 )}
                 <span className="psb-actions">
                   {group.path && (
-                    <button className="psb-act" title="new conversation here"
+                    <button className="psb-act" title="在此新建对话"
                       onClick={() => onNewInProject(group.path, group.profile)}>
                       <Icon name="plus" size={10} />
                     </button>
                   )}
                   {!multi && !editing && renameButton(group.tabs[0])}
                   {!multi && (
-                    <button className="psb-act" title="close tab" onClick={() => onCloseTab(group.tabs[0].id)}>
+                    <button className="psb-act" title="关闭标签页" onClick={() => onCloseTab(group.tabs[0].id)}>
                       <Icon name="close" size={9} />
                     </button>
                   )}
@@ -126,7 +126,7 @@ function ProjectSidebar({
                   )}
                   <span className="psb-actions">
                     {renaming !== t.id && renameButton(t)}
-                    <button className="psb-act" title="close tab" onClick={() => onCloseTab(t.id)}>
+                    <button className="psb-act" title="关闭标签页" onClick={() => onCloseTab(t.id)}>
                       <Icon name="close" size={9} />
                     </button>
                   </span>
@@ -136,8 +136,8 @@ function ProjectSidebar({
           );
         })}
 
-        <div className="psb-section">recent</div>
-        {recents.length === 0 && <div className="psb-empty">no recent projects</div>}
+        <div className="psb-section">最近</div>
+        {recents.length === 0 && <div className="psb-empty">没有最近的项目</div>}
         {recents.map(r => (
           <div key={r.path} className="psb-row psb-recent">
             <span className="psb-chev-spacer" />
@@ -149,7 +149,7 @@ function ProjectSidebar({
               </span>
             </button>
             <span className="psb-actions">
-              <button className="psb-act" title="remove from recent" onClick={() => onForgetRecent(r.path)}>
+              <button className="psb-act" title="从最近中移除" onClick={() => onForgetRecent(r.path)}>
                 <Icon name="close" size={9} />
               </button>
             </span>
@@ -158,7 +158,7 @@ function ProjectSidebar({
       </div>
 
       <button className="psb-foot" onClick={onOpenFolder}>
-        <Icon name="plus" size={11} />open folder…
+        <Icon name="plus" size={11} />打开文件夹…
       </button>
     </aside>
   );

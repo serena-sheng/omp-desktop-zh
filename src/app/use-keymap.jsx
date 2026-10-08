@@ -41,7 +41,7 @@ function useKeymap(bridge, profileId) {
       // on every open, so a transient IPC failure must not revert dispatch
       // to registry defaults or blank the footer's omp/overlay path info
       // until the next successful reload.
-      setError("Keybinding configuration could not be loaded.");
+      setError("无法加载按键绑定配置。");
       return;
     }
     hasResolvedRef.current = true;
@@ -72,7 +72,7 @@ function useKeymap(bridge, profileId) {
   }, [bridge, profileId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setBinding = React.useCallback(async (action, keys) => {
-    if (!bridge) return "no bridge";
+    if (!bridge) return "没有面板";
     // Capture the generation *before* awaiting: if a newer reload (e.g. a
     // tab/profile switch) starts while this write is in flight, applying
     // this call's payload afterward would show tab A's profile on tab B's
@@ -94,7 +94,7 @@ function useKeymap(bridge, profileId) {
   }, [bridge, applyPayload, reload]);
 
   const resetBinding = React.useCallback(async (action) => {
-    if (!bridge) return "no bridge";
+    if (!bridge) return "没有面板";
     const gen = genRef.current;
     const res = await bridge.resetKeybinding(action);
     if (!res.ok) return res.error;

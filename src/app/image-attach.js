@@ -105,7 +105,7 @@
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload  = () => resolve(reader.result);
-      reader.onerror = () => reject(reader.error ?? new Error("could not read file"));
+      reader.onerror = () => reject(reader.error ?? new Error("无法读取文件"));
       reader.readAsDataURL(file);
     });
   }
@@ -114,7 +114,7 @@
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload  = () => resolve(img);
-      img.onerror = () => reject(new Error("not a decodable image"));
+      img.onerror = () => reject(new Error("不是可解码的图片"));
       img.src = src;
     });
   }
@@ -145,7 +145,7 @@
       ctx.fillRect(0, 0, width, height);
       out = parseDataUrl(canvas.toDataURL("image/jpeg", JPEG_QUALITY));
     }
-    if (!out) throw new Error("could not encode image");
+    if (!out) throw new Error("无法编码图片");
     return out;
   }
 

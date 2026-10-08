@@ -21,16 +21,16 @@ function SubagentRailCard({ agents, paneOpen, onOpen, onTogglePane }) {
     <div className="rail-card glass">
       <div className="rail-card-head">
         <_SAR_Icon name="agent" size={11} color="var(--cyan)" />
-        <span className="mono" style={{ color: "var(--fg-2)" }}>subagents</span>
+        <span className="mono" style={{ color: "var(--fg-2)" }}>子智能体</span>
         {t.live > 0 ? (
           <span className="chip accent mono" style={{ marginLeft: "auto" }}><span className="dot live" /> {t.live} live</span>
         ) : (
-          <span className="chip muted mono" style={{ marginLeft: "auto" }}>{t.total ? `${t.total} ran` : "idle"}</span>
+          <span className="chip muted mono" style={{ marginLeft: "auto" }}>{t.total ? `${t.total} ran` :"空闲"}</span>
         )}
       </div>
 
       {t.total === 0 ? (
-        <div className="sa-empty">Agents spawned by <span className="mono">task</span> calls show up here, live.</div>
+        <div className="sa-empty">由此启动的智能体： <span className="mono">task</span> 调用会实时显示在这里。</div>
       ) : (
         <>
           <div className="sa-rail-stats mono">
@@ -64,7 +64,7 @@ function SubagentRailCard({ agents, paneOpen, onOpen, onTogglePane }) {
       )}
 
       <button className="btn ghost outlined sa-rail-open" onClick={onTogglePane}>
-        <_SAR_Icon name="split" size={11} /> {paneOpen ? "hide manager" : "open manager"}
+        <_SAR_Icon name="split" size={11} /> {paneOpen ? "隐藏管理器" : "打开管理器"}
       </button>
     </div>
   );

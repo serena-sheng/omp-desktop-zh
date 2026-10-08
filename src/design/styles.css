@@ -6,8 +6,8 @@
 
 :root {
   /* type */
-  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  --font-mono: "JetBrains Mono", "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Hiragino Sans GB", "Songti SC", sans-serif;
+  --font-mono: "JetBrains Mono", "Berkeley Mono", ui-monospace, "SF Mono", Menlo, "Hiragino Sans GB", monospace;
   --font-display: "Geist", "Inter", -apple-system, sans-serif;
 
   /* density (overridden by .density-* on root) */

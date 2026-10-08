@@ -48,7 +48,7 @@ function RenameField({ value, onCommit, onClose }) {
     <input ref={inputRef}
       className="rename-field"
       value={draft}
-      aria-label="conversation name"
+      aria-label="对话名称"
       spellCheck={false}
       onChange={e => setDraft(e.target.value)}
       onClick={stop} onDoubleClick={stop} onAuxClick={stop}

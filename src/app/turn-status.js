@@ -83,7 +83,7 @@
   const _text = v => (typeof v === "string" && v.trim() ? v.trim() : null);
 
   // omp's own text for a failed message without one (rpc-prompt-results.ts).
-  const UNKNOWN_FAILURE = "Provider request failed";
+  const UNKNOWN_FAILURE = "提供商请求失败";
 
   function _failure({ raw, httpStatus, provider, model, retryable }) {
     return { raw, headline: providerHeadline(raw) || raw, httpStatus, provider, model, retryable };
@@ -178,7 +178,7 @@
 
   // `finalError` of a retry cancelled between attempts by `abort_retry` or
   // `abort` (turn-recovery.ts `#endCancelledRetry`).
-  const RETRY_CANCELLED = "Retry cancelled";
+  const RETRY_CANCELLED = "重试已取消";
 
   const _count = v => (Number.isInteger(v) && v > 0 ? v : null);
 

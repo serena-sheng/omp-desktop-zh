@@ -9,7 +9,7 @@ const { Icon: _TD_Icon, TreeFmt: _TD_Fmt } = window;
 const { isLive: _TD_isLive, isCached: _TD_isCached } = window.OMP_CONV_TREE;
 
 const TREE_OPEN_TITLE =
-  "A new omp process starts with a different system prompt, so the whole conversation is written to the cache again.";
+  "新的 omp 进程使用不同的系统提示，所以整段对话都会重新写入缓存。";
 
 function treeNowDesc(row) {
   const t = _TD_Fmt.tokens;
@@ -26,7 +26,7 @@ function TreeCompare({ row, now }) {
   return (
     <div className="tree-compare">
       <div className="cmp now">
-        <div className="cmp-k">re-ask now</div>
+        <div className="cmp-k">现在重问</div>
         <div className="cmp-v">{nowValue}</div>
         <div className="cmp-d">{treeNowDesc(row)}</div>
       </div>
@@ -53,8 +53,8 @@ function TreeDetail({ row, tips, now, since, streaming, onBranch, onFork, onOpen
     setError(null);
     try {
       const res = await action();
-      if (res?.cancelled) setError("Cancelled by omp.");
-      else if (res && res.ok === false) setError(res.error || "omp refused the request.");
+      if (res?.cancelled) setError("已被 omp 取消。");
+      else if (res && res.ok === false) setError(res.error || "omp 拒绝了这个请求。");
     } catch (e) {
       setError(String(e?.message ?? e));
     } finally {
@@ -63,7 +63,7 @@ function TreeDetail({ row, tips, now, since, streaming, onBranch, onFork, onOpen
   };
 
   const blocked = busy || streaming;
-  const wait = streaming ? "Wait for the current turn to finish." : undefined;
+  const wait = streaming ? "等当前回合结束。" : undefined;
   // A new process rebuilds the system prompt, so opening is priced as the
   // whole conversation of the file's tip written again (its cold price).
   const fileTip = row.openFile ? tips.find(t => t.file === row.openFile) : null;
@@ -80,16 +80,16 @@ function TreeDetail({ row, tips, now, since, streaming, onBranch, onFork, onOpen
       <div className="tree-actions">
         {row.inCurrent && (
           <button className="btn primary" disabled={blocked}
-            title={wait ?? "Start a new session before this prompt and put the prompt back in the composer."}
+            title={wait ?? "在此提示词之前新建会话，并把提示词放回输入框。"}
             onClick={() => run(() => onBranch(row.id))}>
-            <_TD_Icon name="branch" size={11} /> Branch here
+            <_TD_Icon name="branch" size={11} /> 从此处分支
           </button>
         )}
         {row.inCurrent && row.forkEntryId && (
           <button className="btn outlined" disabled={blocked}
-            title={wait ?? "Continue in a new session file that keeps this prompt and its reply."}
+            title={wait ?? "在新的会话文件中继续，保留这条提示词及其回复。"}
             onClick={() => run(() => onFork(row.forkEntryId))}>
-            Fork after the reply
+            在该回复之后分叉
           </button>
         )}
         {row.openFile && (

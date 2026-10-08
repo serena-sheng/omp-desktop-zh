@@ -35,11 +35,11 @@ function SubagentControls({ agentId, running, onSteer, onStop }) {
     try {
       await onSteer(agentId, text);
       setDraft(""); // read-only while sending, so this is still the text that went out
-      setNote({ err: false, text: "Sent. The agent reads it at its next step." });
+      setNote({ err: false, text: "已发送。智能体会在下一步读取。" });
     } catch (e) {
       // A timeout is not a refusal: omp may still deliver the message.
       setNote(e?.timedOut
-        ? { err: false, text: "No answer from omp yet; the message may still arrive." }
+        ? { err: false, text: "omp 还没有回答；消息可能仍在路上。" }
         : { err: true, text: String(e?.message ?? e) });
     } finally {
       setSending(false);
@@ -55,7 +55,7 @@ function SubagentControls({ agentId, running, onSteer, onStop }) {
     let stopped = false;
     try {
       stopped = await onStop(agentId);
-      setNote({ err: false, text: stopped ? "Stopped." : "It was no longer running." });
+      setNote({ err: false, text: stopped ?"已停止。" : "它已经不在运行了。" });
     } catch (e) {
       setNote({ err: true, text: String(e?.message ?? e) });
     }
@@ -75,28 +75,28 @@ function SubagentControls({ agentId, running, onSteer, onStop }) {
       else e.target.blur?.();
     }}>
       <textarea ref={inputRef} className="sa-ctl-input" rows={2} value={draft} readOnly={sending}
-        placeholder="Message this agent…" aria-label={`message ${agentId}`}
+        placeholder="给该智能体发消息…" aria-label={`message ${agentId}`}
         onChange={e => { setDraft(e.target.value); setNote(null); }}
         onKeyDown={e => {
           if (running && window.isSubmitEnter(e) && !e.shiftKey) { e.preventDefault(); send(); }
         }} />
       {note && <div className={`sa-ctl-note${note.err ? " err" : ""}`}>{note.text}</div>}
-      {!running && !sending && <div className="sa-ctl-note">The agent is no longer running; this text was not sent.</div>}
+      {!running && !sending && <div className="sa-ctl-note">智能体已不在运行；这段文本没有发出。</div>}
       {running && stopPhase === "confirm" && (
         <div className="sa-ctl-row confirm">
-          <span className="sa-ctl-ask">Stop this agent? The parent gets an aborted result.</span>
-          <button autoFocus className="btn ghost outlined" onClick={endConfirm}>keep running</button>
+          <span className="sa-ctl-ask">停止该智能体？父任务会收到已中止的结果。</span>
+          <button autoFocus className="btn ghost outlined" onClick={endConfirm}>继续运行</button>
           <button className="btn danger" onClick={stop}><_SAC_Icon name="stop" size={10} /> stop</button>
         </div>
       )}
       {running && stopPhase !== "confirm" && (
         <div className="sa-ctl-row">
-          <button className="btn ghost outlined" onClick={() => setStopPhase("confirm")} disabled={stopPhase === "stopping"} title="stop this agent">
-            <_SAC_Icon name="stop" size={10} /> {stopPhase === "stopping" ? "stopping…" : "stop"}
+          <button className="btn ghost outlined" onClick={() => setStopPhase("confirm")} disabled={stopPhase === "stopping"} title="停止该智能体">
+            <_SAC_Icon name="stop" size={10} /> {stopPhase === "stopping" ? "正在停止…" : "stop"}
           </button>
           <div style={{ flex: 1 }} />
           <button className="btn primary" onClick={send} disabled={!canSend}>
-            {sending ? "sending…" : "send"} <_SAC_Icon name="arrow" size={11} />
+            {sending ? "发送中…" : "send"} <_SAC_Icon name="arrow" size={11} />
           </button>
         </div>
       )}

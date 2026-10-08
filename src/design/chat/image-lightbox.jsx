@@ -143,7 +143,7 @@ function ImageLightbox({ images, index, onIndex, onClose, thumbFor }) {
       className={`lightbox${closing ? " is-closing" : ""}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Attached image"
+      aria-label="已附加图片"
       tabIndex={-1}
       onClick={close}
     >
@@ -156,7 +156,7 @@ function ImageLightbox({ images, index, onIndex, onClose, thumbFor }) {
         style={imgStyle}
         onLoad={(e) => readNatural(e.currentTarget)}
       />
-      <button className="lightbox-btn lightbox-close" title="Close (Esc)" onClick={(e) => { e.stopPropagation(); close(); }}>
+      <button className="lightbox-btn lightbox-close" title="关闭 (Esc)" onClick={(e) => { e.stopPropagation(); close(); }}>
         <_LB_Icon name="close" size={14} />
       </button>
       {count > 1 && (

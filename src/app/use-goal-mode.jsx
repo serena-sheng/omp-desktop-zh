@@ -51,7 +51,7 @@ function _UG_useContinuation(bridge, profileId, active) {
     if (reqRef.current !== my) return;
     setSt(s => (res?.ok
       ? { ...s, value: res.value === true, busy: false }
-      : { ...s, busy: false, error: res?.error ?? "could not change the setting" }));
+      : { ...s, busy: false, error: res?.error ?? "无法更改设置" }));
   };
   const mine = st.forProfile === profileId;
   return { value: mine ? st.value : null, busy: mine && st.busy, error: mine ? st.error : null, set };
@@ -97,7 +97,7 @@ function useGoalMode({ bridge, tabId, sessionIds, goal, planMode, profileId, run
       update(id, () => _UG_IDLE);
       return;
     }
-    update(id, d => ({ ...d, mode: true, error: res?.error ?? "Could not start the goal." }));
+    update(id, d => ({ ...d, mode: true, error: res?.error ?? "无法启动该目标。" }));
     if (tabRef.current === id) onRestoreDraft?.(text, images);
   };
 

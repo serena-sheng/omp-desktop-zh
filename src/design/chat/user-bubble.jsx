@@ -23,7 +23,7 @@ function UserBubble({ msg, idx, highlighted }) {
               <button
                 key={i}
                 className="user-image-btn"
-                title="View image"
+                title="查看图片"
                 onClick={() => setOpenIdx(i)}
               >
                 {/* Hidden, not removed, while it is the one enlarged: the
@@ -32,7 +32,7 @@ function UserBubble({ msg, idx, highlighted }) {
                   ref={(el) => { thumbsRef.current[i] = el; }}
                   className={`user-image${openIdx === i ? " is-lifted" : ""}`}
                   src={src}
-                  alt="attached image"
+                  alt="已附加图片"
                 />
               </button>
             ))}

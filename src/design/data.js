@@ -25,7 +25,7 @@
         { type: "text", text: "Sketching a small plan first — three files, no API change. I'll keep `ToolCallState` shape stable so renderers don't blink." },
         {
           type: "plan",
-          title: "Plan",
+          title: "计划",
           phases: [
             { id: "scout",  label: "Scout",   tasks: [
               { id: "t1", text: "trace duplicate render path in `reducer.ts`",        status: "done" },
@@ -187,16 +187,16 @@
 
   // ── Slash command palette
   const commands = [
-    { name: "plan",      hint: "draft a plan before writing code",          icon: "◇", group: "Mode" },
-    { name: "steer",     hint: "interrupt and redirect mid-tool",           icon: "↺", group: "Mode" },
-    { name: "compact",   hint: "compact context window",                    icon: "▤", group: "Session" },
-    { name: "branch",    hint: "fork the session from current head",        icon: "⑂", group: "Session" },
-    { name: "handoff",   hint: "package the session for a teammate",        icon: "⇲", group: "Session" },
-    { name: "model",     hint: "switch model · ⇧⌘M",                         icon: "◉", group: "Agent" },
-    { name: "thinking",  hint: "cycle thinking level",                      icon: "✶", group: "Agent" },
-    { name: "todo",      hint: "open the kanban surface",                   icon: "▦", group: "View" },
-    { name: "minimap",   hint: "toggle the session minimap",                icon: "▢", group: "View" },
-    { name: "export",    hint: "export this session to HTML",               icon: "⇪", group: "View" },
+    { name: "plan",      hint: "先写计划再动代码",          icon: "◇", group: "模式" },
+    { name: "steer",     hint: "中途打断并改向",           icon: "↺", group: "模式" },
+    { name: "compact",   hint: "压缩上下文窗口",                    icon: "▤", group: "会话" },
+    { name: "branch",    hint: "fork the session from current head",        icon: "⑂", group: "会话" },
+    { name: "handoff",   hint: "package the session for a teammate",        icon: "⇲", group: "会话" },
+    { name: "model",     hint: "switch model · ⇧⌘M",                         icon: "◉", group: "智能体" },
+    { name: "thinking",  hint: "切换思考级别",                      icon: "✶", group: "智能体" },
+    { name: "todo",      hint: "打开看板界面",                   icon: "▦", group: "视图" },
+    { name: "minimap",   hint: "toggle the session minimap",                icon: "▢", group: "视图" },
+    { name: "export",    hint: "把此会话导出为 HTML",               icon: "⇪", group: "视图" },
   ];
 
   // ── Available models
@@ -243,11 +243,11 @@
 
   // ── Microcopy delights
   const microcopy = {
-    empty:        "Hand me a project. I'll set the table.",
+    empty:        "把项目交给我，我来摆好桌子。",
     streamingTip: "Press ⎋ to interrupt — your cursor is in the room.",
-    paletteTip:   "type / to give orders · ⌘K opens the bridge",
-    todoEmpty:    "no plan yet. think out loud below.",
-    radarHint:    "agent has been busy — last 60 seconds",
+    paletteTip:   "输入 / 下达指令 · ⌘K 打开命令面板",
+    todoEmpty:    "还没有计划。在下面边说边想。",
+    radarHint:    "智能体最近 60 秒很忙",
   };
 
   window.OMP_DATA = { projects, messages, kanban, planMeta, commands, models, activity, ctx, peer, microcopy };

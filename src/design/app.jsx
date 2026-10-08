@@ -186,15 +186,15 @@ function App() {
         />
       )}
 
-      <TweaksPanel title="Tweaks" noDeckControls>
-        <TweakSection label="Look">
+      <TweaksPanel title="微调" noDeckControls>
+        <TweakSection label="外观">
           <TweakRadio
-            label="theme"
+            label="主题"
             value={t.theme}
             options={[
-              { label: "aurora",   value: "aurora" },
-              { label: "phosphor", value: "phosphor" },
-              { label: "daylight", value: "daylight" },
+              { label: "极光",   value: "aurora" },
+              { label: "荧光", value: "phosphor" },
+              { label: "日光", value: "daylight" },
             ]}
             onChange={(v) => {
               setTweak({ theme: v, accent:
@@ -204,32 +204,32 @@ function App() {
             }}
           />
           <TweakRadio
-            label="density"
+            label="密度"
             value={t.density}
             options={[
-              { label: "cozy", value: "cozy" },
-              { label: "compact", value: "compact" },
-              { label: "dense", value: "dense" },
+              { label: "宽松", value: "cozy" },
+              { label: "超紧凑", value: "compact" },
+              { label: "紧凑", value: "dense" },
             ]}
             onChange={(v) => setTweak("density", v)}
           />
           <TweakColor
-            label="accent"
+            label="强调色"
             value={t.accent}
             options={["#8AF0C8", "#6EE7FF", "#FF7AC6", "#FFC56E", "#B59BFF", "#C4FF3F"]}
             onChange={(v) => setTweak("accent", v)}
           />
-          <TweakToggle label="mono chat font" value={t.monoChat}
+          <TweakToggle label="等宽聊天字体" value={t.monoChat}
             onChange={(v) => setTweak("monoChat", v)} />
         </TweakSection>
-        <TweakSection label="Layout">
+        <TweakSection label="布局">
           <TweakRadio
-            label="layout"
+            label="布局"
             value={t.layout}
             options={[
-              { label: "rail", value: "rail" },
-              { label: "split", value: "split" },
-              { label: "focus", value: "focus" },
+              { label: "侧栏", value: "rail" },
+              { label: "分屏", value: "split" },
+              { label: "专注", value: "focus" },
             ]}
             onChange={(v) => setTweak("layout", v)}
           />
@@ -248,7 +248,7 @@ function SplitPeer({ peer }) {
         <span className="mono" style={{ color: "var(--cyan)" }}>{peer.project}</span>
         <span style={{ color: "var(--fg-3)" }}>· {peer.title}</span>
         <div style={{ flex: 1 }} />
-        <button className="btn ghost"><Icon name="arrow" size={11} /> focus</button>
+        <button className="btn ghost"><Icon name="arrow" size={11} /> 专注</button>
       </div>
       <div className="split-body">
         <div className="split-stream">
@@ -265,7 +265,7 @@ function SplitPeer({ peer }) {
           <div className="split-row mono">
             <span className="chip" style={{ color: "var(--accent)", borderColor: "color-mix(in oklab, var(--accent) 30%, var(--line))" }}>edit</span>
             <span style={{ color: "var(--fg-3)" }}>packages/tokens/css.ts</span>
-            <span className="shimmer-text" style={{ marginLeft: "auto" }}>writing patch…</span>
+            <span className="shimmer-text" style={{ marginLeft: "auto" }}>正在写补丁…</span>
           </div>
           <div className="split-row split-thought">
             <span className="mono" style={{ color: "var(--fg-4)" }}>// </span>

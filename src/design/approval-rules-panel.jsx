@@ -40,19 +40,19 @@ function ApprovalRulesPanel({ onClose }) {
       <div className="rules-panel" onClick={e => e.stopPropagation()}>
         <div className="rules-head">
           <_RulesIcon name="check" size={13} color="var(--accent)" />
-          <span className="mono" style={{ color: "var(--fg-2)" }}>approval rules</span>
-          <button className="btn icon ghost" style={{ marginLeft: "auto" }} onClick={refresh} title="refresh">
+          <span className="mono" style={{ color: "var(--fg-2)" }}>审批规则</span>
+          <button className="btn icon ghost" style={{ marginLeft: "auto" }} onClick={refresh} title="刷新">
             <_RulesIcon name="refresh" size={11} />
           </button>
-          <button className="btn icon ghost" onClick={onClose} title="close">
+          <button className="btn icon ghost" onClick={onClose} title="关闭">
             <_RulesIcon name="close" size={11} />
           </button>
         </div>
         <div className="rules-body">
-          {loading && rules.length === 0 && <div className="panel-empty mono">loading…</div>}
+          {loading && rules.length === 0 && <div className="panel-empty mono">加载中…</div>}
           {!loading && rules.length === 0 && (
             <div className="panel-empty mono">
-              no standing rules yet — grant one from an "Allow tool" prompt
+              还没有常驻规则 —— 在「允许工具」提示里授权一条
             </div>
           )}
           {rules.map((rule, i) => (
@@ -73,7 +73,7 @@ function ApprovalRulesPanel({ onClose }) {
               <button
                 className="btn icon ghost"
                 style={{ marginLeft: "auto" }}
-                title="revoke"
+                title="撤销授权"
                 onClick={() => handleRevoke(rule)}
               >
                 <_RulesIcon name="trash" size={10} />

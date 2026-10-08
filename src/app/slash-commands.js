@@ -25,28 +25,28 @@
   // same name/alias (desktop UI wins), so omp's terminal `/branch` and
   // `/tree` pickers never run from the desktop.
   const LOCAL_COMMANDS = Object.freeze([
-    { name: "plan",      hint: "draft a plan before writing code",             icon: "◇", group: "Mode"    },
-    { name: "goal",      hint: "start a goal the agent works on until done",   icon: "◎", group: "Mode"    },
-    { name: "steer",     hint: "interrupt and redirect mid-tool",              icon: "↺", group: "Mode"    },
-    { name: "compact",   hint: "compact context window",                       icon: "▤", group: "Session" },
-    { name: "new",       hint: "start a fresh session (history kept on disk)", icon: "↺", group: "Session" },
-    { name: "history",   hint: "browse and resume saved sessions",             icon: "◷", group: "Session" },
-    { name: "branch",    hint: "re-ask a prompt or fork, from the conversation tree", icon: "⑂", group: "Session" },
-    { name: "tree",      hint: "conversation tree with prompt-cache status",   icon: "⑂", group: "Session" },
-    { name: "model",     hint: "switch model",                                 icon: "◉", group: "Agent"   },
-    { name: "thinking",  hint: "cycle thinking level",                         icon: "✶", group: "Agent"   },
-    { name: "login",     hint: "authenticate with a model provider",           icon: "⊙", group: "Agent"   },
-    { name: "todo",      hint: "open the kanban surface",                      icon: "▦", group: "View"    },
-    { name: "export",    hint: "export this session to HTML",                  icon: "⇪", group: "View"    },
-    { name: "shortcuts", hint: "view and rebind keyboard shortcuts",           icon: "⌘", group: "View"    },
-    { name: "check-updates", hint: "check for OMP Desktop updates",            icon: "↑", group: "View"    },
+    { name: "plan",      hint: "先写计划再动代码",             icon: "◇", group: "模式"    },
+    { name: "goal",      hint: "开始一个由智能体做到完成为止的目标",   icon: "◎", group: "模式"    },
+    { name: "steer",     hint: "中途打断并改向",              icon: "↺", group: "模式"    },
+    { name: "compact",   hint: "压缩上下文窗口",                       icon: "▤", group: "会话" },
+    { name: "new",       hint: "开启一个全新会话（历史仍保留在磁盘上）", icon: "↺", group: "会话" },
+    { name: "history",   hint: "浏览并恢复已保存的会话",             icon: "◷", group: "会话" },
+    { name: "branch",    hint: "从对话树重问某条提示词或分叉", icon: "⑂", group: "会话" },
+    { name: "tree",      hint: "带提示词缓存状态的对话树",   icon: "⑂", group: "会话" },
+    { name: "model",     hint: "切换模型",                                 icon: "◉", group: "智能体"   },
+    { name: "thinking",  hint: "切换思考级别",                         icon: "✶", group: "智能体"   },
+    { name: "login",     hint: "使用模型提供商登录",           icon: "⊙", group: "智能体"   },
+    { name: "todo",      hint: "打开看板界面",                      icon: "▦", group: "视图"    },
+    { name: "export",    hint: "把此会话导出为 HTML",                  icon: "⇪", group: "视图"    },
+    { name: "shortcuts", hint: "查看并重新绑定键盘快捷键",           icon: "⌘", group: "视图"    },
+    { name: "check-updates", hint: "检查 OMP Desktop 更新",            icon: "↑", group: "视图"    },
   ].map((c) => Object.freeze({ ...c, source: DESKTOP, aliases: [] })));
 
   const SOURCE_STYLE = {
-    builtin: { group: "Commands", icon: "›" },
-    skill:   { group: "Skills",   icon: "✦" },
+    builtin: { group: "命令", icon: "›" },
+    skill:   { group: "技能",   icon: "✦" },
   };
-  const CUSTOM_STYLE = { group: "Custom", icon: "◈" };
+  const CUSTOM_STYLE = { group: "自定义", icon: "◈" };
 
   const isDesktop = (cmd) => cmd?.source === DESKTOP;
   const strOr = (v, fallback) => (typeof v === "string" ? v : fallback);

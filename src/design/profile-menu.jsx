@@ -80,7 +80,7 @@ function ProfileMenu({
   const commit = async () => {
     if (busy.current) return;
     const name = draft.trim();
-    if (!name) { setError("name required"); return; }
+    if (!name) { setError("名称必填"); return; }
     const gen = openGen.current;
     busy.current = true;
     // Held across every await below, including the create path's second
@@ -99,7 +99,7 @@ function ProfileMenu({
         res = { ok: false, error: e?.message ?? String(e) };
       }
       if (gen !== openGen.current) return;   // dismissed mid-round-trip
-      if (!res?.ok) { setError(res?.error ?? "could not save"); return; }
+      if (!res?.ok) { setError(res?.error ?? "无法保存"); return; }
       // A freshly created profile is what the user wants this tab to use —
       // selecting it here is the whole point of adding it. Awaited, so a
       // refused pick reports instead of closing on a half-done action.
@@ -118,7 +118,7 @@ function ProfileMenu({
           sel = { ok: false, error: e?.message ?? String(e) };
         }
         if (gen !== openGen.current) return;
-        if (sel && !sel.ok) { setError(sel.error ?? "could not switch profile"); return; }
+        if (sel && !sel.ok) { setError(sel.error ?? "无法切换配置"); return; }
       }
       close();
     } finally {
@@ -147,7 +147,7 @@ function ProfileMenu({
       busy.current = false;
     }
     if (gen !== openGen.current) return;
-    if (res && !res.ok) { setError(res.error ?? "could not switch profile"); return; }
+    if (res && !res.ok) { setError(res.error ?? "无法切换配置"); return; }
     close();
   };
 
@@ -171,7 +171,7 @@ function ProfileMenu({
       busy.current = false;
     }
     if (gen !== openGen.current) return;   // dismissed mid-round-trip
-    setError(res?.ok ? null : res?.error ?? "could not delete");
+    setError(res?.ok ? null : res?.error ?? "无法删除");
   };
 
   const setStartup = async id => {
@@ -199,7 +199,7 @@ function ProfileMenu({
       <button
         ref={triggerRef}
         className="btn ghost outlined profile-trigger"
-        title="omp profile for this tab (auth, sessions, settings)"
+        title="该标签页的 omp 配置（认证、会话、设置）"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => (open ? close() : setOpen(true))}>
@@ -210,7 +210,7 @@ function ProfileMenu({
 
       {open && (
         <div className="profile-pop" role="menu">
-          <div className="profile-pop-head mono" role="none">profile · this tab</div>
+          <div className="profile-pop-head mono" role="none">配置 · 该标签页</div>
 
           {/* role="none" on every non-menuitem container: a generic element
               between role="menu" and its items breaks the owned-elements
@@ -283,7 +283,7 @@ function ProfileMenu({
                       : `delete profile “${p.name}”`}
                     onClick={() => remove(p.id)}>
                     {armed
-                      ? <span className="profile-del-label mono">delete?</span>
+                      ? <span className="profile-del-label mono">删除？</span>
                       : <Icon name="trash" size={10} />}
                   </button>
                 ) : (
@@ -303,7 +303,7 @@ function ProfileMenu({
                 className="profile-input"
                 value={draft}
                 maxLength={48}
-                placeholder={mode === "create" ? "work, home, client…" : "new name"}
+                placeholder={mode === "create" ? "工作、家庭、客户…" : "新名称"}
                 onChange={e => { setDraft(e.target.value); setError(null); }}
                 onKeyDown={e => {
                   // Raw `key === "Enter"` would also fire on the Enter that
@@ -312,10 +312,10 @@ function ProfileMenu({
                   if (isSubmitEnter(e)) { e.preventDefault(); commit(); }
                   if (e.key === "Escape") { e.stopPropagation(); cancelEdit(); }
                 }} />
-              <button className="btn icon ghost" title="save" onClick={commit}>
+              <button className="btn icon ghost" title="保存" onClick={commit}>
                 <Icon name="check" size={10} />
               </button>
-              <button className="btn icon ghost" title="cancel" onClick={cancelEdit}>
+              <button className="btn icon ghost" title="取消" onClick={cancelEdit}>
                 <Icon name="close" size={9} />
               </button>
             </div>
@@ -323,7 +323,7 @@ function ProfileMenu({
             <React.Fragment>
               <button role="menuitem" className="profile-item" onClick={() => startEdit("create")}>
                 <Icon name="plus" size={10} />
-                <span className="profile-item-name">new profile…</span>
+                <span className="profile-item-name">新建配置…</span>
               </button>
               <button role="menuitem" className="profile-item" onClick={() => startEdit("rename")}>
                 <Icon name="edit" size={10} />
@@ -335,8 +335,8 @@ function ProfileMenu({
           {error && <div className="profile-hint err" role="none">{error}</div>}
           <div className="profile-hint" role="none">
             {armedDelete
-              ? "delete only unlists it — files under ~/.omp/profiles stay on disk"
-              : "tick = default for new tabs · switching restarts this tab’s agent"}
+              ? "删除只是取消列出 —— ~/.omp/profiles 下的文件仍留在磁盘上"
+              : "打勾 = 新标签页的默认配置 · 切换会重启该标签页的智能体"}
           </div>
         </div>
       )}

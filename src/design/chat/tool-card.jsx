@@ -37,7 +37,7 @@ function ScrubbableDiff({ msg }) {
           <span style={{ color: "var(--diff-add-fg)" }}>+{msg.adds}</span>
           <span style={{ color: "var(--diff-rm-fg)" }}>−{msg.rems}</span>
         </span>
-        <_TC_Copy className="diff-copy" label="Copy diff" text={msg.diffText} />
+        <_TC_Copy className="diff-copy" label="复制差异" text={msg.diffText} />
       </div>
       <div className="diff-body mono">
         <div className="diff-lines">
@@ -125,7 +125,7 @@ function TaskAgentRow({ sa, onInspect }) {
           {hasBody && <_TC_Icon name={isOpen ? "chev" : "chevR"} size={10} color="var(--fg-4)" />}
         </button>
         {onInspect && sa.id && (
-          <button className="btn icon ghost ta-inspect" title="inspect in subagent manager" onClick={() => onInspect(sa.id)}>
+          <button className="btn icon ghost ta-inspect" title="在子智能体管理器中查看" onClick={() => onInspect(sa.id)}>
             <_TC_Icon name="focus" size={11} />
           </button>
         )}
@@ -167,7 +167,7 @@ function ToolCard({ msg, idx, highlighted, onInspectSubagent }) {
           <div className="tool-card-spacer" />
           {running ? (
             <span className="chip accent" style={{ animation: "pulseDot 1.4s infinite" }}>
-              <span className="dot live" /> running
+              <span className="dot live" /> 运行中
             </span>
           ) : (
             <span className="chip muted">
@@ -204,13 +204,13 @@ function ToolCard({ msg, idx, highlighted, onInspectSubagent }) {
             <span style={{ color: "var(--fg-2)" }}>{msg.target}</span>
             <span style={{ color: "var(--diff-add-fg)", marginLeft: 8 }} className="mono">+{msg.adds || 0}</span>
             <span style={{ color: "var(--diff-rm-fg)", marginLeft: 4 }} className="mono">−{msg.rems || 0}</span>
-            {running && <span className="shimmer-text" style={{ marginLeft: "auto" }}>writing patch…</span>}
+            {running && <span className="shimmer-text" style={{ marginLeft: "auto" }}>正在写补丁…</span>}
           </div>
         )}
 
         {msg.tool === "bash" && msg.output && (
           // Copies the whole output, not just the lines shown.
-          <_TC_CopyHost label="Copy output" text={msg.outputText}>
+          <_TC_CopyHost label="复制输出" text={msg.outputText}>
             <pre className="tool-bash mono selectable">
               {msg.output.map((l, i) => (
                 <div key={i} style={{ color: `var(--${l.color})` }}>{l.line}</div>

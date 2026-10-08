@@ -31,7 +31,7 @@ function ShortcutRow({ action, chords, src, recording, rowError, conflict, disab
         </div>
 
         {recording
-          ? <span className="kb-recording mono">press a chord · esc cancels</span>
+          ? <span className="kb-recording mono">按下组合键 · Esc 取消</span>
           : <div className="kb-chords">
               {chords.length
                 ? chords.map(c => <span className="kbd" key={c}>{formatChord(c)}</span>)
@@ -215,7 +215,7 @@ function ShortcutsModal({ open, onClose, keymap }) {
   // ── Footer paths ────────────────────────────────────────────────────────────
 
   const overlayPath = keymap.overlayPath ?? "—";
-  const ompPath     = keymap.payload?.ompPath ?? "no keybindings file";
+  const ompPath     = keymap.payload?.ompPath ?? "没有按键绑定文件";
   const inherited   = keymap.payload?.inheritedPath;
 
   return (
@@ -229,7 +229,7 @@ function ShortcutsModal({ open, onClose, keymap }) {
           <input
             ref={inputRef}
             className="bridge-input mono"
-            placeholder="filter actions…"
+            placeholder="筛选动作…"
             value={q}
             onChange={e => setQ(e.target.value)}
           />
@@ -249,7 +249,7 @@ function ShortcutsModal({ open, onClose, keymap }) {
         {/* Action rows */}
         <div className="bridge-body" style={{ maxHeight: "58vh", padding: "6px 8px" }}>
           {grouped.length === 0
-            ? <div className="bridge-empty">no matching action</div>
+            ? <div className="bridge-empty">没有匹配的动作</div>
             : grouped.map(group => (
               <div className="bridge-group" key={group.name}>
                 <div className="bridge-group-head">{group.name}</div>
@@ -281,7 +281,7 @@ function ShortcutsModal({ open, onClose, keymap }) {
             {inherited && <span style={{ color: "var(--fg-4)" }}> + inherits {inherited}</span>}
           </span>
           <span style={{ color: "var(--fg-4)" }}>·</span>
-          <span className="kbd">esc</span> close
+          <span className="kbd">esc</span> 关闭
         </div>
       </div>
     </div>

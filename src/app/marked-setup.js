@@ -108,7 +108,7 @@
         // button adds no text to a manual selection.
         return '<pre class="code-block copy-host"><code class="hljs' + cls + '">' +
                highlighted + '</code>' +
-               '<button class="copy-btn is-floating" type="button" aria-label="Copy code" title="Copy code"></button>' +
+               '<button class="copy-btn is-floating" type="button" aria-label="复制代码" title="复制代码"></button>' +
                '</pre>';
       },
       link({ href, title, tokens, text, autolink }) {

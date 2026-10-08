@@ -35,8 +35,8 @@ function _AD_Text({ text }) {
 
 function AskQuestion({ q, qi, total, entry, onPick, onType, onEnter }) {
   const needsAnswer = total > 1 && _AD.unanswered(q, entry);
-  const placeholder = q.options.length === 0 ? "Type your answer…"
-    : q.multi ? "Add your own…" : "Or type your own answer…";
+  const placeholder = q.options.length === 0 ? "输入你的回答…"
+    : q.multi ? "添加自定义…" : "或输入你自己的回答…";
   return (
     <section className="ask-q">
       {(total > 1 || q.header) && (
@@ -44,7 +44,7 @@ function AskQuestion({ q, qi, total, entry, onPick, onType, onEnter }) {
           {total > 1 && <span className="mono">{qi + 1}/{total}</span>}
           {q.header && <span className="chip warn">{q.header}</span>}
           <span className={`ask-q-kind${needsAnswer ? " todo" : ""}`}>
-            {q.multi ? "pick any" : needsAnswer ? "needs an answer" : "pick one"}
+            {q.multi ? "任选一个" : needsAnswer ? "需要回答" : "选一个"}
           </span>
         </div>
       )}
@@ -95,8 +95,8 @@ function AskSummary({ questions, answers }) {
               {q.header && <span className="chip warn">{q.header}</span>}
               <span className="ask-sum-q-text"><_AD_Text text={q.question.replace(/\s+/g, " ").trim()} /></span>
             </div>
-            {!a && <div className="ask-sum-a none">not answered</div>}
-            {a && picked.length === 0 && !a.customInput && <div className="ask-sum-a none">nothing picked</div>}
+            {!a && <div className="ask-sum-a none">未回答</div>}
+            {a && picked.length === 0 && !a.customInput && <div className="ask-sum-a none">未选择</div>}
             {picked.map((label, i) => (
               <div key={i} className="ask-sum-a"><_AD_Check /><span><_AD_Text text={label} /></span></div>
             ))}
@@ -130,10 +130,10 @@ function AskDialog({ msg, onSubmit, onCancel }) {
     if (onClick) send(next); else update(next);
   };
   const progress = onClick
-    ? (canSend ? "Enter sends your answer" : "Click an option to answer")
+    ? (canSend ? "回车发送你的回答" : "点击一个选项来回答")
     : missing > 0
       ? `${missing} question${missing === 1 ? "" : "s"} still need${missing === 1 ? "s" : ""} an answer`
-      : "Ready to send";
+      : "可发送";
 
   // Bare Shift+Tab is a window shortcut (thinking level) even inside text
   // fields; here it has to move focus back through the dialog instead.
@@ -153,10 +153,10 @@ function AskDialog({ msg, onSubmit, onCancel }) {
       <div className="ask-dialog-foot">
         <span className={`ask-progress${!onClick && missing > 0 ? " incomplete" : ""}`}>{progress}</span>
         <span className="ask-foot-spacer" />
-        <button type="button" className="ask-opt" onClick={onCancel}>Cancel</button>
+        <button type="button" className="ask-opt" onClick={onCancel}>取消</button>
         {(!onClick || canSend) && (
           <button type="button" className="ask-submit" disabled={!canSend} onClick={() => send(draft)}>
-            {questions.length > 1 ? "Submit answers" : "Submit"}
+            {questions.length > 1 ? "提交答案" :"提交"}
           </button>
         )}
       </div>

@@ -89,7 +89,7 @@ function UsageStatsPanel({ onClose, profileLabel }) {
       setData(res.value);
     } else {
       setData(EMPTY);
-      setError("no usage in the last 24 hours");
+      setError("最近 24 小时没有用量");
     }
     setLoading(false);
   }, [bridge]);
@@ -104,15 +104,15 @@ function UsageStatsPanel({ onClose, profileLabel }) {
         <div className="stats-head">
           <_StatsIcon name="cost" size={13} color="var(--accent)" />
           <span className="mono" style={{ color: "var(--fg-2)" }}>usage · {profileLabel} · last 24h</span>
-          <button className="btn icon ghost" style={{ marginLeft: "auto" }} onClick={refresh} title="refresh">
+          <button className="btn icon ghost" style={{ marginLeft: "auto" }} onClick={refresh} title="刷新">
             <_StatsIcon name="refresh" size={11} />
           </button>
-          <button className="btn icon ghost" onClick={onClose} title="close">
+          <button className="btn icon ghost" onClick={onClose} title="关闭">
             <_StatsIcon name="close" size={11} />
           </button>
         </div>
         <div className="stats-body">
-          {loading && !overall && <div className="panel-empty mono">syncing session logs…</div>}
+          {loading && !overall && <div className="panel-empty mono">正在同步会话日志…</div>}
           {!loading && error && <div className="panel-empty mono">{error}</div>}
           {overall && (
             <>
@@ -123,7 +123,7 @@ function UsageStatsPanel({ onClose, profileLabel }) {
                   <span className="stats-card-sub">{formatPct(overall.errorRate)} error rate</span>
                 </div>
                 <div className="stats-card">
-                  <span className="stats-card-label">cost</span>
+                  <span className="stats-card-label">成本</span>
                   <span className="stats-card-value">{formatCost(overall.totalCost)}</span>
                   <span className="stats-card-sub">{formatCount(overall.totalPremiumRequests)} premium</span>
                 </div>
@@ -145,9 +145,9 @@ function UsageStatsPanel({ onClose, profileLabel }) {
                 </div>
               </div>
 
-              <div className="stats-section-label mono">by model</div>
+              <div className="stats-section-label mono">按模型</div>
               <div className="stats-table">
-                {data.byModel.length === 0 && <div className="panel-empty mono">no data</div>}
+                {data.byModel.length === 0 && <div className="panel-empty mono">没有数据</div>}
                 {data.byModel.map(m => (
                   <div key={`${m.provider}-${m.model}`} className="stats-row">
                     <span className="stats-row-name mono" title={`${m.provider}/${m.model}`}>{m.model}</span>
@@ -160,9 +160,9 @@ function UsageStatsPanel({ onClose, profileLabel }) {
                 ))}
               </div>
 
-              <div className="stats-section-label mono">by folder</div>
+              <div className="stats-section-label mono">按文件夹</div>
               <div className="stats-table">
-                {data.byFolder.length === 0 && <div className="panel-empty mono">no data</div>}
+                {data.byFolder.length === 0 && <div className="panel-empty mono">没有数据</div>}
                 {data.byFolder.map(f => (
                   <div key={f.folder} className="stats-row">
                     <span className="stats-row-name mono" title={f.folder}>{displayFolder(f.folder)}</span>
@@ -174,7 +174,7 @@ function UsageStatsPanel({ onClose, profileLabel }) {
 
               {data.byAgentType.length > 0 && (
                 <>
-                  <div className="stats-section-label mono">by agent type</div>
+                  <div className="stats-section-label mono">按智能体类型</div>
                   <div className="stats-chips">
                     {data.byAgentType.map(a => (
                       <span key={a.agentType} className="chip muted mono">

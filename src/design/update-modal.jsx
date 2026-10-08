@@ -64,21 +64,21 @@ function UpdateModal({ updater, busyTabs }) {
         <div className="update-head">
           <_UpdIcon name="arrowUp" size={13} color="var(--accent)" />
           <span className="mono" style={{ color: "var(--fg-2)" }}>updates · OMP Desktop {version ? `v${version}` : ""}</span>
-          <button className="btn icon ghost" style={{ marginLeft: "auto" }} title="check again"
+          <button className="btn icon ghost" style={{ marginLeft: "auto" }} title="重新检查"
             onClick={updater.check} disabled={U.isBusy(state)}>
             <_UpdIcon name="refresh" size={11} />
           </button>
           {!inFlight && (
-            <button className="btn icon ghost" onClick={close} title="close">
+            <button className="btn icon ghost" onClick={close} title="关闭">
               <_UpdIcon name="close" size={11} />
             </button>
           )}
         </div>
 
         <div className="update-body">
-          {phase === "idle" && <div className="panel-empty mono">not checked yet</div>}
-          {phase === "checking" && !update && <div className="panel-empty mono">checking for updates…</div>}
-          {phase === "uptodate" && <div className="panel-empty mono">you're on the latest version</div>}
+          {phase === "idle" && <div className="panel-empty mono">尚未检查</div>}
+          {phase === "checking" && !update && <div className="panel-empty mono">正在检查更新…</div>}
+          {phase === "uptodate" && <div className="panel-empty mono">你已是最新版本</div>}
           {phase === "error" && <div className="panel-empty mono update-error">{error}</div>}
 
           {update && (
@@ -112,7 +112,7 @@ function UpdateModal({ updater, busyTabs }) {
                   </span>
                   <span className="mono" style={{ color: "var(--fg-3)" }}>
                     {phase === "restarting"
-                      ? "restarting…"
+                      ? "正在重启…"
                       : `${U.formatBytes(progress?.downloaded ?? 0)}${progress?.total ? ` / ${U.formatBytes(progress.total)}` : ""}`}
                   </span>
                 </div>
@@ -123,13 +123,13 @@ function UpdateModal({ updater, busyTabs }) {
 
         {update && !inFlight && (
           <div className="update-foot">
-            <button className="btn ghost" onClick={updater.skip} title="hide the notice until a newer version">skip this version</button>
+            <button className="btn ghost" onClick={updater.skip} title="在新版本发布前不再提示">跳过此版本</button>
             <div style={{ flex: 1 }} />
             <button className="btn ghost" onClick={close}>later</button>
             {update.canInstall ? (
               <>
                 <button className="btn outlined" onClick={updater.openRelease}>
-                  <_UpdIcon name="external" size={11} /> release page
+                  <_UpdIcon name="external" size={11} /> 发布页
                 </button>
                 <button className="btn primary" onClick={updater.install} disabled={!U.canStartInstall(state)}>
                   install &amp; restart
@@ -137,7 +137,7 @@ function UpdateModal({ updater, busyTabs }) {
               </>
             ) : (
               <button className="btn primary" onClick={updater.openRelease}>
-                <_UpdIcon name="external" size={11} /> open release page
+                <_UpdIcon name="external" size={11} /> 打开发布页
               </button>
             )}
           </div>

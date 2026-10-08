@@ -90,7 +90,7 @@ function ThinkingMenu({ model, level, cycleHint, onLoad, onSet }) {
       if (pending.current !== token) return;
       pending.current = null;
       setBusy(false);
-      setError(e?.timedOut ? "omp has not answered yet; the level may still change"
+      setError(e?.timedOut ? "omp 还没有回答；级别可能还会变"
         : `not applied: ${e?.message ?? e}`);
       return;
     }
@@ -100,17 +100,17 @@ function ThinkingMenu({ model, level, cycleHint, onLoad, onSet }) {
   return (
     <div className="thinking-menu" ref={rootRef}>
       <button ref={triggerRef} className="composer-pill" aria-haspopup="menu" aria-expanded={open}
-        title={cycleHint ? `thinking level (${cycleHint} cycles)` : "thinking level"}
+        title={cycleHint ? `thinking level (${cycleHint} cycles)` : "思考级别"}
         onClick={() => (open ? close() : setOpen(true))}>
         <_TM_Icon name="thinking" size={11} color="var(--lilac)" />
         <span style={{ color: "var(--fg-2)" }}>thinking · {level}</span>
         <_TM_Icon name="chev" size={10} color="var(--fg-4)" />
       </button>
       {open && (
-        <div ref={popRef} className={`thinking-pop${busy ? " busy" : ""}`} role="menu" aria-label="thinking level" onKeyDown={onPopKey}>
+        <div ref={popRef} className={`thinking-pop${busy ? " busy" : ""}`} role="menu" aria-label="思考级别" onKeyDown={onPopKey}>
           <div className="thinking-pop-head mono" role="none">thinking · {model?.name}</div>
           {!shown ? (
-            <div className="thinking-pop-note" role="none">loading…</div>
+            <div className="thinking-pop-note" role="none">加载中…</div>
           ) : shown.error ? (
             <div className="thinking-pop-note error" role="none">could not load the levels: {shown.error}</div>
           ) : (<>
@@ -126,7 +126,7 @@ function ThinkingMenu({ model, level, cycleHint, onLoad, onSet }) {
               </button>
             ))}
             {shown.levels.length <= 1 && (
-              <div className="thinking-pop-note" role="none">this model has no thinking levels</div>
+              <div className="thinking-pop-note" role="none">该模型没有思考级别</div>
             )}
           </>)}
           {error && <div className="thinking-pop-note error" role="none">{error}</div>}

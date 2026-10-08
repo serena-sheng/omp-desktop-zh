@@ -754,54 +754,54 @@ function App() {
         <UpdateModal updater={updater} busyTabs={window.OMP_UPDATER.busyTabCount(sessions)} />
       )}
 
-      <TweaksPanel title="Tweaks" noDeckControls>
-        <TweakSection label="Look">
-          <TweakRadio label="theme" value={t.theme}
+      <TweaksPanel title="微调" noDeckControls>
+        <TweakSection label="外观">
+          <TweakRadio label="主题" value={t.theme}
             options={[
-              { label: "aurora",   value: "aurora"   },
-              { label: "phosphor", value: "phosphor" },
-              { label: "daylight", value: "daylight" },
+              { label: "极光",   value: "aurora"   },
+              { label: "荧光", value: "phosphor" },
+              { label: "日光", value: "daylight" },
             ]}
             onChange={v => setTweak({ theme: v, accent:
               v === "aurora"   ? "#8AF0C8" :
               v === "phosphor" ? "#C4FF3F" : "#1F8A5B"
             })}
           />
-          <TweakRadio label="density" value={t.density}
+          <TweakRadio label="密度" value={t.density}
             options={[
-              { label: "cozy",    value: "cozy"    },
-              { label: "compact", value: "compact" },
-              { label: "dense",   value: "dense"   },
+              { label: "宽松",    value: "cozy"    },
+              { label: "超紧凑", value: "compact" },
+              { label: "紧凑",   value: "dense"   },
             ]}
             onChange={v => setTweak("density", v)}
           />
-          <TweakColor label="accent" value={t.accent}
+          <TweakColor label="强调色" value={t.accent}
             options={["#8AF0C8", "#6EE7FF", "#FF7AC6", "#FFC56E", "#B59BFF", "#C4FF3F"]}
             onChange={v => setTweak("accent", v)}
           />
-          <TweakToggle label="mono chat font" value={t.monoChat}
+          <TweakToggle label="等宽聊天字体" value={t.monoChat}
             onChange={v => setTweak("monoChat", v)} />
-          <TweakSlider label="font size" value={t.fontSize ?? 100}
+          <TweakSlider label="字号" value={t.fontSize ?? 100}
             min={75} max={150} step={5} unit="%"
             onChange={v => setTweak("fontSize", v)} />
         </TweakSection>
-        <TweakSection label="Layout">
-          <TweakRadio label="layout" value={t.layout}
+        <TweakSection label="布局">
+          <TweakRadio label="布局" value={t.layout}
             options={[
-              { label: "rail",  value: "rail"  },
-              { label: "split", value: "split" },
-              { label: "focus", value: "focus" },
+              { label: "侧栏",  value: "rail"  },
+              { label: "分屏", value: "split" },
+              { label: "专注", value: "focus" },
             ]}
             onChange={v => setTweak("layout", v)}
           />
-          <TweakToggle label="project sidebar" value={t.sidebar ?? true}
+          <TweakToggle label="项目侧栏" value={t.sidebar ?? true}
             onChange={v => setTweak("sidebar", v)} />
         </TweakSection>
-        <TweakSection label="Session">
-          <TweakSlider label="prompt history" value={t.promptHistoryLimit ?? window.OMP_PROMPT_HISTORY.DEFAULT_LIMIT}
+        <TweakSection label="会话">
+          <TweakSlider label="提示词历史" value={t.promptHistoryLimit ?? window.OMP_PROMPT_HISTORY.DEFAULT_LIMIT}
             min={window.OMP_PROMPT_HISTORY.MIN_LIMIT} max={window.OMP_PROMPT_HISTORY.MAX_LIMIT} step={10} unit=" prompts"
             onChange={v => setTweak("promptHistoryLimit", v)} />
-          <TweakToggle label="check for updates" value={t.updateCheck ?? true}
+          <TweakToggle label="检查更新" value={t.updateCheck ?? true}
             onChange={v => setTweak("updateCheck", v)} />
         </TweakSection>
       </TweaksPanel>

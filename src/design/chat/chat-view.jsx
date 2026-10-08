@@ -47,11 +47,11 @@ const CompactRow = React.memo(function CompactRow({ msg }) {
             color: COLOR,
             background: `color-mix(in oklab, ${COLOR} 14%, transparent)`,
             borderColor: `color-mix(in oklab, ${COLOR} 30%, var(--line))`,
-          }}>compact</span>
+          }}>超紧凑</span>
           <span className="tool-title">
             {pending ? "compacting context\u2026"
-              : error   ? "compaction failed"
-              : (msg.shortSummary || "context compacted")}
+              : error   ? "压缩失败"
+              : (msg.shortSummary || "上下文已压缩")}
           </span>
           <div className="tool-card-spacer" />
           {pending && (
@@ -215,7 +215,7 @@ function ChatView({ messages, planMode, annotations, onAnnotate, hoveredMsgIdx, 
       {showJump && (
         <button type="button" className="chat-jump-latest" onClick={jumpToLatest}>
           <_CV_Icon name="chev" size={12} />
-          Jump to latest
+          跳到最新
         </button>
       )}
     </div>

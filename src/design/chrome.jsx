@@ -64,16 +64,16 @@ function WindowChrome({
 
       <div className="chrome-right">
         <button className="btn ghost outlined" onClick={onCmd}>
-          <Icon name="command" size={11} /> bridge{" "}
+          <Icon name="command" size={11} /> 命令面板{" "}
           <span className="kbd">{hintFor("desktop.commands.open", IS_WIN ? "^K" : "⌘K")}</span>
         </button>
 
         {/* Windows controls — right side, hidden on macOS/Linux */}
         {IS_WIN && (
           <div className="win-controls">
-            <button className="win-ctrl win-min"   title="Minimize">&#8211;</button>
-            <button className="win-ctrl win-max"   title="Maximize / Restore">&#9633;</button>
-            <button className="win-ctrl win-close" title="Close">&#10005;</button>
+            <button className="win-ctrl win-min"   title="最小化">&#8211;</button>
+            <button className="win-ctrl win-max"   title="最大化 / 还原">&#9633;</button>
+            <button className="win-ctrl win-close" title="关闭">&#10005;</button>
           </div>
         )}
       </div>
@@ -153,7 +153,7 @@ function TabBar({
           </div>
         );
       })}
-      <button className="tab-add" title="open project" onClick={onNew}>
+      <button className="tab-add" title="打开项目" onClick={onNew}>
         <Icon name="plus" size={11} />
       </button>
       <button className="tab-add" title={`conversation history (${hintFor("desktop.history.open", "Ctrl+H")})`} onClick={onHistory}>
@@ -166,7 +166,7 @@ function TabBar({
             <Icon name="arrowUp" size={9} />v{updateVersion}
           </button>
         )}
-        <button className="btn ghost app-version" onClick={onCheckUpdate} title="check for updates">
+        <button className="btn ghost app-version" onClick={onCheckUpdate} title="检查更新">
           {appVersion ? `v${appVersion}` : "—"}
         </button>
       </div>
@@ -179,7 +179,7 @@ function StatusBar({ ctx, model, thinking, todoDone, todoTotal, onTodo, onModel,
   const thinkLabel = THINKING_LEVELS[thinking]?.short ?? thinking ?? "—";
   return (
     <div className="status">
-      <span className="status-cell"><span className="dot live" /> connected</span>
+      <span className="status-cell"><span className="dot live" /> 已连接</span>
       <span className="status-sep">·</span>
       <button className="status-cell btn ghost" onClick={onModel} style={{ height: 20, padding: "0 6px" }}>
         <span style={{ color: "var(--accent)" }}>{model.name}</span>
@@ -196,7 +196,7 @@ function StatusBar({ ctx, model, thinking, todoDone, todoTotal, onTodo, onModel,
         <span style={{ color: "var(--fg-4)" }}>{(+ctx.pct).toFixed(1)}%</span>
       </span>
       <span className="status-sep">·</span>
-      <span className="status-cell mono"><span style={{ color: "var(--fg-3)" }}>cost</span> {ctx.cost}</span>
+      <span className="status-cell mono"><span style={{ color: "var(--fg-3)" }}>成本</span> {ctx.cost}</span>
       <span className="status-sep">·</span>
       <span className="status-cell mono"><span style={{ color: "var(--fg-3)" }}>{ctx.tokensPerSec}</span> t/s</span>
       <div style={{ flex: 1 }} />
@@ -206,29 +206,29 @@ function StatusBar({ ctx, model, thinking, todoDone, todoTotal, onTodo, onModel,
       </button>
       <span className="status-sep">·</span>
       <button className="status-cell btn ghost" onClick={() => onAutosave?.(!autosave)}
-        style={{ height: 20, padding: "0 6px" }} title="toggle autosave">
+        style={{ height: 20, padding: "0 6px" }} title="切换自动保存">
         <span className="mono" style={{ color: autosave ? "var(--fg-3)" : "var(--fg-5)" }}>
-          autosave {autosave ? "on" : "off"}
+          自动保存 {autosave ? "开" : "关"}
         </span>
       </button>
       <span className="status-sep">·</span>
-      <button className="status-cell btn ghost" onClick={onChanges} title="changes (git status/diff)" style={{ height: 20, padding: "0 6px" }}>
+      <button className="status-cell btn ghost" onClick={onChanges} title="改动（git status/diff）" style={{ height: 20, padding: "0 6px" }}>
         <Icon name="diff2" size={11} color="var(--fg-3)" />
       </button>
       <span className="status-sep">·</span>
-      <button className="status-cell btn ghost" onClick={onTree} title="conversation tree (prompt-cache status)" style={{ height: 20, padding: "0 6px" }}>
+      <button className="status-cell btn ghost" onClick={onTree} title="对话树（提示词缓存状态）" style={{ height: 20, padding: "0 6px" }}>
         <Icon name="branch" size={11} color="var(--fg-3)" />
       </button>
       <span className="status-sep">·</span>
-      <button className="status-cell btn ghost" onClick={onRules} title="approval rules" style={{ height: 20, padding: "0 6px" }}>
+      <button className="status-cell btn ghost" onClick={onRules} title="审批规则" style={{ height: 20, padding: "0 6px" }}>
         <Icon name="check" size={11} color="var(--fg-3)" />
       </button>
       <span className="status-sep">·</span>
-      <button className="status-cell btn ghost" onClick={onStats} title="usage statistics" style={{ height: 20, padding: "0 6px" }}>
+      <button className="status-cell btn ghost" onClick={onStats} title="用量统计" style={{ height: 20, padding: "0 6px" }}>
         <Icon name="cost" size={11} color="var(--fg-3)" />
       </button>
       <span className="status-sep">·</span>
-      <button className="status-cell btn ghost" onClick={onTweaks} title="tweaks" style={{ height: 20, padding: "0 6px" }}>
+      <button className="status-cell btn ghost" onClick={onTweaks} title="微调" style={{ height: 20, padding: "0 6px" }}>
         <Icon name="cog" size={11} color="var(--fg-3)" />
       </button>
     </div>
@@ -259,7 +259,7 @@ function SessionMinimap({ messages, hoveredIdx, onHover, onClick }) {
     <div className="minimap">
       <div className="minimap-head">
         <Icon name="minimap" size={11} color="var(--fg-3)" />
-        <span className="mono" style={{ color: "var(--fg-3)" }}>session</span>
+        <span className="mono" style={{ color: "var(--fg-3)" }}>会话</span>
         <span className="mono" style={{ marginLeft: "auto", color: "var(--fg-4)" }}>{shown}</span>
       </div>
       <div className="minimap-grid">
@@ -345,12 +345,12 @@ function AmbientRail({
   return (
     <aside className="rail">
       <div className="rail-head">
-        <span className="mono" style={{ color: "var(--fg-3)" }}>ambient</span>
+        <span className="mono" style={{ color: "var(--fg-3)" }}>环境</span>
         <span className="rail-head-actions">
-          <button className="btn icon ghost" onClick={onOpenTree} title="conversation tree (prompt-cache status)">
+          <button className="btn icon ghost" onClick={onOpenTree} title="对话树（提示词缓存状态）">
             <Icon name="branch" size={10} />
           </button>
-          <button className="btn icon ghost" onClick={onClose} title="hide rail">
+          <button className="btn icon ghost" onClick={onClose} title="隐藏侧轨">
             <Icon name="close" size={10} />
           </button>
         </span>
@@ -358,11 +358,11 @@ function AmbientRail({
 
       <div className="rail-card glass">
         <TokenGauge used={ctx.used} total={ctx.total} pct={ctx.pct}
-          label={ctx.label} sub={`cost ${ctx.cost} · ${ctx.tokensPerSec} t/s`} />
+          label={ctx.label} sub={`成本 ${ctx.cost} · ${ctx.tokensPerSec} t/s`} />
         <div className="rail-spark">
           <Sparkline values={sparkVals} width={210} height={28} />
           <div className="rail-spark-foot mono">
-            <span style={{ color: "var(--fg-4)" }}>throughput</span>
+            <span style={{ color: "var(--fg-4)" }}>吞吐</span>
             <span style={{ color: "var(--accent)" }}>{ctx.tokensPerSec} t/s</span>
           </div>
         </div>
@@ -371,8 +371,8 @@ function AmbientRail({
       <div className="rail-card glass">
         <div className="rail-card-head">
           <Icon name="radar" size={11} color="var(--accent)" />
-          <span className="mono" style={{ color: "var(--fg-2)" }}>agent radar</span>
-          <span className="chip muted mono" style={{ marginLeft: "auto" }}>last 60s</span>
+          <span className="mono" style={{ color: "var(--fg-2)" }}>智能体雷达</span>
+          <span className="chip muted mono" style={{ marginLeft: "auto" }}>最近 60 秒</span>
         </div>
         <ActivityRadar activity={activity} tps={ctx.tokensPerSec} />
         <div className="legend">
@@ -390,7 +390,7 @@ function AmbientRail({
       <div className="rail-card glass" style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 120 }}>
         <div className="rail-card-head">
           <Icon name="minimap" size={11} color="var(--fg-3)" />
-          <span className="mono" style={{ color: "var(--fg-2)" }}>minimap</span>
+          <span className="mono" style={{ color: "var(--fg-2)" }}>小地图</span>
         </div>
         <SessionMinimap messages={messages} hoveredIdx={hoveredMsgIdx} onHover={onMinimapHover} onClick={onMinimapClick} />
       </div>

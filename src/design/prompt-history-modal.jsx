@@ -79,7 +79,7 @@ function PromptHistoryModal({ open, entries, onClose, onPick }) {
       <div ref={containerRef} tabIndex={-1} className="bridge slide-in" onClick={e => e.stopPropagation()} style={{ width: "min(640px, calc(100vw - 32px))", maxHeight: "72vh", outline: "none" }}>
         <div className="bridge-input-row" style={{ padding: "12px 16px", gap: 10 }}>
           <Icon name="clock" size={16} color="var(--accent)" />
-          <span style={{ color: "var(--fg)", fontWeight: 550, flex: 1 }}>Prompt history</span>
+          <span style={{ color: "var(--fg)", fontWeight: 550, flex: 1 }}>提示词历史</span>
           <span className="mono" style={{ color: "var(--fg-4)", fontSize: "var(--d-text-xs)" }}>
             {entries.length} {entries.length === 1 ? "prompt" : "prompts"}
           </span>
@@ -88,7 +88,7 @@ function PromptHistoryModal({ open, entries, onClose, onPick }) {
 
         <div ref={listRef} className="bridge-body" style={{ maxHeight: "56vh", padding: "6px 8px" }}>
           {entries.length === 0 && (
-            <div className="bridge-empty">No prompts sent in this tab yet.</div>
+            <div className="bridge-empty">此标签页还没发送过提示词。</div>
           )}
           {entries.map((text, idx) => {
             const isSelected = idx === clampedIdx;
@@ -121,7 +121,7 @@ function PromptHistoryModal({ open, entries, onClose, onPick }) {
         <div className="bridge-foot mono" style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span className="kbd">↑↓</span> navigate
           <span className="kbd">↵</span> insert into composer
-          <span className="kbd">esc</span> close
+          <span className="kbd">esc</span> 关闭
         </div>
       </div>
     </div>

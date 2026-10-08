@@ -62,10 +62,10 @@
   // slash-commands/builtin-lifecycle.ts rename handle): success, no title
   // generated, user-set name takes precedence, generation threw.
   const RENAME_NOTE_PREFIXES = [
-    "Session renamed to ",
-    "Could not generate a session title",
-    "Session name not changed",
-    "Rename failed",
+    "会话已重命名为 ",
+    "无法生成会话标题",
+    "会话名未更改",
+    "重命名失败",
   ];
 
   /** Whether a `command_output` text is one of the automatic rename's

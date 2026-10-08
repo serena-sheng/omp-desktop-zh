@@ -20,7 +20,7 @@ function _GS_Switch({ cont }) {
   const known = cont.value !== null;
   // Unknown: still loading ("…"), or omp could not be asked ("?"; the
   // reason shows in the strip's error line).
-  const label = known ? (on ? "on" : "off") : cont.error ? "?" : "…";
+  const label = known ? (on ? "开" : "关") : cont.error ? "?" : "…";
   return (
     <button type="button" className="goal-switch" role="switch" aria-checked={on}
       disabled={cont.busy || !known}
@@ -45,19 +45,19 @@ function _GS_Budget({ budget, onBudget }) {
   };
   return (
     <>
-      <span className="goal-budget-label">token budget</span>
-      <button type="button" className={`goal-opt${budget == null ? " on" : ""}`} aria-pressed={budget == null} onClick={() => onBudget(null)}>no limit</button>
+      <span className="goal-budget-label">token 预算</span>
+      <button type="button" className={`goal-opt${budget == null ? " on" : ""}`} aria-pressed={budget == null} onClick={() => onBudget(null)}>无限制</button>
       {_GS_PRESETS.map(n => (
         <button type="button" key={n} className={`goal-opt${budget === n ? " on" : ""}`} aria-pressed={budget === n} onClick={() => onBudget(n)}>{_GS_budgetLabel(n)}</button>
       ))}
       {custom === null ? (
         <button type="button" className={`goal-opt${preset ? "" : " on"}`} aria-pressed={!preset}
           onClick={() => { setCustom(preset ? "" : String(budget)); setBad(false); }}>
-          {preset ? "custom…" : _GS_budgetLabel(budget)}
+          {preset ? "自定义…" : _GS_budgetLabel(budget)}
         </button>
       ) : (
-        <input className={`goal-budget-input mono${bad ? " bad" : ""}`} autoFocus value={custom} placeholder="e.g. 300k"
-          aria-label="custom token budget"
+        <input className={`goal-budget-input mono${bad ? " bad" : ""}`} autoFocus value={custom} placeholder="例如 300k"
+          aria-label="自定义 token 预算"
           onChange={e => { setCustom(e.target.value); setBad(false); }}
           onKeyDown={e => {
             if (e.key === "Enter") { e.preventDefault(); commit(); }
@@ -68,7 +68,7 @@ function _GS_Budget({ budget, onBudget }) {
           // its own button.
           onBlur={() => { if (custom.trim()) commit(); else { setCustom(null); setBad(false); } }} />
       )}
-      {bad && <span className="goal-error-inline">a whole number of tokens, like 300k</span>}
+      {bad && <span className="goal-error-inline">整数 token 数，例如 300k</span>}
     </>
   );
 }
@@ -78,8 +78,8 @@ function _GS_Draft({ draft, cont, onExit, onBudget }) {
     <div className="goal-strip">
       <div className="goal-head">
         <_GS_Icon name="goal" size={12} color="var(--lilac)" />
-        <span className="goal-name">goal mode</span>
-        <span className="goal-sub">· your message becomes the goal; the agent works toward it until it calls it done</span>
+        <span className="goal-name">目标模式</span>
+        <span className="goal-sub">· 你的消息会变成目标，智能体持续努力直到判定完成</span>
         <div className="goal-spacer" />
         <button type="button" className="btn ghost" onClick={onExit}>exit</button>
       </div>
@@ -94,7 +94,7 @@ function _GS_Draft({ draft, cont, onExit, onBudget }) {
 }
 
 const _GS_WAITING = {
-  off: "omp continues a goal by itself only with auto-continue on.",
+  off: "只有开启自动继续时，omp 才会自行接着推进目标。",
   // Idle with auto-continue on: the last goal turn made no new progress,
   // or the setting was only just turned on. Either way omp decides again
   // when the next turn ends.
@@ -155,19 +155,19 @@ function _GS_Status({ bridge, tabGoal, busy, cont }) {
       </div>
       {view.waiting && (
         <div className="goal-line">
-          <span className="goal-note"><b>Waiting for your next message.</b> {_GS_WAITING[view.waiting]}</span>
+          <span className="goal-note"><b>等待你的下一条消息。</b> {_GS_WAITING[view.waiting]}</span>
           {switchInWaiting && <_GS_Switch cont={cont} />}
           {switchInWaiting && (
             <button type="button" className="btn outlined goal-resume" disabled={cont.busy || cont.value === null}
-              onClick={() => cont.set(true)}>turn on</button>
+              onClick={() => cont.set(true)}>开启</button>
           )}
         </div>
       )}
       {confirmDrop && (
         <div className="goal-line">
-          <span className="goal-note">Drop this goal? Its token usage stays in the session log.</span>
+          <span className="goal-note">放弃该目标？它的 token 用量仍会留在会话日志里。</span>
           <button type="button" className="btn outlined goal-drop" disabled={pending !== null} onClick={() => run("drop")}>
-            {pending === "drop" ? "dropping…" : "drop goal"}
+            {pending === "drop" ? "正在放弃…" : "放弃目标"}
           </button>
           <button type="button" className="btn ghost" disabled={pending !== null} onClick={() => setConfirmDrop(false)}>keep</button>
         </div>

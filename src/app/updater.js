@@ -73,7 +73,7 @@
         return {
           ...state,
           phase: state.update ? "available" : "error",
-          error: String(action.error ?? "update check failed"),
+          error: String(action.error ?? "更新检查失败"),
         };
 
       case "install-start":
@@ -94,7 +94,7 @@
 
       case "install-failed":
         if (state.phase !== "downloading") return state;
-        return { ...state, phase: "available", progress: null, error: String(action.error ?? "update failed") };
+        return { ...state, phase: "available", progress: null, error: String(action.error ?? "更新失败") };
 
       default:
         return state;

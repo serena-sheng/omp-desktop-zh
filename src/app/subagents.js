@@ -153,7 +153,7 @@
       case "tool_execution_start":
         return { t: now, kind: "tool", tool: ev.toolName ?? "", text: formatArgs(ev.args) };
       case "tool_execution_end":
-        return ev.isError ? { t: now, kind: "error", tool: ev.toolName ?? "", text: "tool failed" } : null;
+        return ev.isError ? { t: now, kind: "error", tool: ev.toolName ?? "", text: "工具失败" } : null;
       case "message_end": {
         const m = ev.message;
         // A user message attributed to the user is one a person sent the

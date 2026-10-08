@@ -34,7 +34,7 @@ const { Icon: _AskIcon, AskDialog: _AskDialog, OMP_ASK_DIALOG: _AskDialogRules }
 // (card without grant), wrong option count/labels/order, unrelated
 // select prompt, prefix-in-middle and leading-newline false positives,
 // non-string title, missing options).
-const APPROVAL_TITLE_PREFIX = "Allow tool: ";
+const APPROVAL_TITLE_PREFIX = "允许工具：";
 const APPROVAL_TOOL_NAME = /^[A-Za-z0-9][\w.:-]{0,63}$/;
 
 // Split a prompt title into its first line and the (possibly empty)
@@ -126,7 +126,7 @@ function AskBubble({ msg, idx, highlighted, onAnswer, onAnswerDialog, onConfirm,
             disabled={done}
             onClick={() => confirm(false)}
           >
-            Deny
+            拒绝
           </button>
         </div>
       </>
@@ -144,8 +144,8 @@ function AskBubble({ msg, idx, highlighted, onAnswer, onAnswerDialog, onConfirm,
         />
         {!done && (
           <div className="ask-editor-actions">
-            <button className="ask-submit" onClick={() => submit(draft)}>Submit</button>
-            <button className="ask-opt" onClick={decline}>Cancel</button>
+            <button className="ask-submit" onClick={() => submit(draft)}>提交</button>
+            <button className="ask-opt" onClick={decline}>取消</button>
           </div>
         )}
       </>
@@ -168,8 +168,8 @@ function AskBubble({ msg, idx, highlighted, onAnswer, onAnswerDialog, onConfirm,
           />
           {!done && (
             <>
-              {draft.trim() && <button className="ask-submit" onClick={() => submit(draft)}>Submit</button>}
-              <button className="ask-opt" onClick={decline}>Cancel</button>
+              {draft.trim() && <button className="ask-submit" onClick={() => submit(draft)}>提交</button>}
+              <button className="ask-opt" onClick={decline}>取消</button>
             </>
           )}
         </div>
@@ -236,7 +236,7 @@ function AskBubble({ msg, idx, highlighted, onAnswer, onAnswerDialog, onConfirm,
       </div>
       <div className="ass-body">
         <div className="ass-meta">
-          <span className="mono" style={{ color: "var(--amber)" }}>Ask</span>
+          <span className="mono" style={{ color: "var(--amber)" }}>询问</span>
           <span className="chip muted">{msg.time}</span>
           {dialogOpen && msg.questions.length > 1 && (
             <span className="chip muted">{msg.questions.length} questions</span>
@@ -249,7 +249,7 @@ function AskBubble({ msg, idx, highlighted, onAnswer, onAnswerDialog, onConfirm,
           )}
           {msg.cancelled && (
             <span className="chip" style={{ color: "var(--fg-4)", borderColor: "var(--line-bright)" }}>
-              {msg.closedByOmp ? "closed by omp" : "cancelled"}
+              {msg.closedByOmp ? "已被 omp 关闭" : "cancelled"}
             </span>
           )}
         </div>
